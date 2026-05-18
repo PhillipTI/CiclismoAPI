@@ -1,0 +1,6 @@
+@CiclismoAPI_HostAddress = http://localhost:5067
+
+GET {{CiclismoAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
