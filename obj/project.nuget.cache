@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MFzi4wfUDYw=",
+  "dgSpecHash": "nsi+nBubVDE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoApi\\CiclismoAPI.csproj",
+  "projectFilePath": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoAPI\\CiclismoAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\phill\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
     "C:\\Users\\phill\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.8\\microsoft.aspnetcore.authentication.jwtbearer.10.0.8.nupkg.sha512",
@@ -30,10 +30,10 @@
     {
       "code": "NU1902",
       "level": "Warning",
-      "message": "O pacote 'SharpCompress' 0.30.1 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-6c8g-7p36-r338",
-      "projectPath": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoApi\\CiclismoAPI.csproj",
+      "message": "Package 'SharpCompress' 0.30.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-6c8g-7p36-r338",
+      "projectPath": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoAPI\\CiclismoAPI.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoApi\\CiclismoAPI.csproj",
+      "filePath": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoAPI\\CiclismoAPI.csproj",
       "libraryId": "SharpCompress",
       "targetGraphs": [
         "net10.0"
