@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CiclismoAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cdc0f435fe566ddd43ed1ee2f745b48a5fc9317d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+048c68358e4cc7b9ff0421e5edd10e0f00475f76")]
 [assembly: System.Reflection.AssemblyProductAttribute("CiclismoAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CiclismoAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
