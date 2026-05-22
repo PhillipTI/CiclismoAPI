@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CiclismoAPI.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,13 @@ var mongoDatabaseName = builder.Configuration["MongoDB:DatabaseName"];
 
 // Controllers, registra os controllers da API (recursos)
 builder.Services.AddControllers();
+// AULA 5 - NoSQL / Princípio D do SOLID (Bônus D):
+// Registramos os Services para injeção de dependência.
+// O .NET vai criar uma instância de cada Service e injetar
+// automaticamente onde for necessário (Controllers).
+builder.Services.AddSingleton<ProdutoService>();
+builder.Services.AddSingleton<PedidoService>();
+builder.Services.AddSingleton<AuthService>();
 
 // Documentação de documentação pelp Swagger
 builder.Services.AddEndpointsApiExplorer();

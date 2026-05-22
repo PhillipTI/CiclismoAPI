@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoApi\\CiclismoAPI.csproj": {}
+    "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoAPI\\CiclismoAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoApi\\CiclismoAPI.csproj": {
+    "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoAPI\\CiclismoAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoApi\\CiclismoAPI.csproj",
+        "projectUniqueName": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoAPI\\CiclismoAPI.csproj",
         "projectName": "CiclismoAPI",
-        "projectPath": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoApi\\CiclismoAPI.csproj",
+        "projectPath": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoAPI\\CiclismoAPI.csproj",
         "packagesPath": "C:\\Users\\phill\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoApi\\obj\\",
+        "outputPath": "C:\\Users\\phill\\ProjetosApp\\ProjetoApiCiclismo\\CiclismoAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\phill\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -44,6 +44,10 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[10.0.8, )"
