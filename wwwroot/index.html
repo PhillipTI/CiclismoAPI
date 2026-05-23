@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CiclismoShop</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background: #f0f0f0;
+        color: #333;
+      }
+
+      header {
+        background: #1a1a2e;
+        color: white;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      header h1 {
+        font-size: 24px;
+        color: #e94560;
+      }
+      nav button {
+        background: none;
+        border: 1px solid #e94560;
+        color: white;
+        padding: 8px 16px;
+        margin-left: 10px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      nav button:hover {
+        background: #e94560;
+      }
+
+      #conteudo {
+        padding: 30px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .card h3 {
+        color: #1a1a2e;
+        margin-bottom: 8px;
+      }
+      .card .preco {
+        color: #e94560;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .card button {
+        margin-top: 10px;
+        background: #e94560;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+      }
+
+      form input {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      form button {
+        background: #1a1a2e;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      form button:hover {
+        background: #e94560;
+      }
+
+      .mensagem {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+      }
+      .sucesso {
+        background: #d4edda;
+        color: #155724;
+      }
+      .erro {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .badge {
+        background: #e94560;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        margin-left: 8px;
+      }
+
+      #carrinho-flutuante {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #1a1a2e;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 30px;
+        cursor: pointer;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>🚴 CiclismoShop</h1>
+      <nav>
+        <button onclick="mostrarTela('produtos')">Produtos</button>
+        <button onclick="mostrarTela('login')" id="btn-login">Login</button>
+        <button
+          onclick="mostrarTela('meus-pedidos')"
+          id="btn-pedidos"
+          style="display: none"
+        >
+          Meus Pedidos
+        </button>
+        <button onclick="logout()" id="btn-logout" style="display: none">
+          Sair
+        </button>
+        <span
+          id="usuario-logado"
+          style="margin-left: 15px; color: #e94560"
+        ></span>
+      </nav>
+    </header>
+
+    <div id="conteudo"></div>
+
+    <div id="carrinho-flutuante" onclick="mostrarTela('carrinho')">
+      🛒 Carrinho <span id="qtd-carrinho" class="badge">0</span>
+    </div>
+
+    <script>
+      const API = "http://localhost:5067/api";
+      let token = localStorage.getItem("token");
+      let carrinho = [];
+
+      // ===== NAVEGAÇÃO ASSÍNCRONA =====
+      // Atualiza apenas o conteúdo da página sem recarregar
+      function mostrarTela(tela) {
+        const conteudo = document.getElementById("conteudo");
+        conteudo.innerHTML = "";
+
+        if (tela === "produtos") carregarProdutos();
+        else if (tela === "login") mostrarLogin();
+        else if (tela === "registro") mostrarRegistro();
+        else if (tela === "carrinho") mostrarCarrinho();
+        else if (tela === "meus-pedidos") carregarMeusPedidos();
+      }
+
+      // ===== PRODUTOS =====
+      // Consome GET /api/Produtos — endpoint público
+      async function carregarProdutos() {
+        const conteudo = document.getElementById("conteudo");
+        conteudo.innerHTML = "<h2>Nossos Produtos</h2><br>";
+
+        try {
+          const res = await fetch(`${API}/Produtos`);
+          const produtos = await res.json();
+
+          if (produtos.length === 0) {
+            conteudo.innerHTML += "<p>Nenhum produto cadastrado ainda.</p>";
+            return;
+          }
+
+          const grid = document.createElement("div");
+          grid.className = "grid";
+
+          produtos.forEach((p) => {
+            grid.innerHTML += `
+                    <div class="card">
+                        <h3>${p.nome}</h3>
+                        <p>${p.descricao}</p>
+                        <p><small>Categoria: ${p.categoria}</small></p>
+                        <p><small>Estoque: ${p.estoque} unidades</small></p>
+                        <p class="preco">R$ ${p.preco.toFixed(2)}</p>
+                        <button onclick="adicionarCarrinho('${p.id}', '${p.nome}', ${p.preco})">
+                            🛒 Adicionar ao Carrinho
+                        </button>
+                    </div>
+                `;
+          });
+
+          conteudo.appendChild(grid);
+        } catch (e) {
+          conteudo.innerHTML +=
+            '<p class="mensagem erro">Erro ao carregar produtos.</p>';
+        }
+      }
+
+      // ===== CARRINHO =====
+      function adicionarCarrinho(id, nome, preco) {
+        if (!token) {
+          alert("Faça login para adicionar ao carrinho!");
+          mostrarTela("login");
+          return;
+        }
+
+        const existente = carrinho.find((i) => i.produtoId === id);
+        if (existente) {
+          existente.quantidade++;
+        } else {
+          carrinho.push({ produtoId: id, nome, preco, quantidade: 1 });
+        }
+
+        atualizarCarrinho();
+        mostrarMensagem("Produto adicionado ao carrinho!", "sucesso");
+      }
+
+      function atualizarCarrinho() {
+        const qtd = carrinho.reduce((t, i) => t + i.quantidade, 0);
+        document.getElementById("qtd-carrinho").textContent = qtd;
+        document.getElementById("carrinho-flutuante").style.display =
+          qtd > 0 ? "block" : "none";
+      }
+
+      function mostrarCarrinho() {
+        const conteudo = document.getElementById("conteudo");
+
+        if (carrinho.length === 0) {
+          conteudo.innerHTML =
+            "<h2>Carrinho</h2><p>Seu carrinho está vazio.</p>";
+          return;
+        }
+
+        let total = 0;
+        let itens = "";
+
+        carrinho.forEach((i) => {
+          total += i.preco * i.quantidade;
+          itens += `
+                <div class="card">
+                    <h3>${i.nome}</h3>
+                    <p>Quantidade: ${i.quantidade}</p>
+                    <p class="preco">R$ ${(i.preco * i.quantidade).toFixed(2)}</p>
+                </div>
+            `;
+        });
+
+        conteudo.innerHTML = `
+            <h2>Carrinho</h2><br>
+            ${itens}
+            <div class="card">
+                <h3>Total: R$ ${total.toFixed(2)}</h3>
+                <button onclick="finalizarPedido()">✅ Finalizar Pedido</button>
+            </div>
+        `;
+      }
+
+      // ===== PEDIDOS =====
+      // Consome POST /api/Pedidos — endpoint protegido
+      async function finalizarPedido() {
+        const itens = carrinho.map((i) => ({
+          produtoId: i.produtoId,
+          quantidade: i.quantidade,
+        }));
+
+        try {
+          const res = await fetch(`${API}/Pedidos`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ itens }),
+          });
+
+          if (res.ok) {
+            carrinho = [];
+            atualizarCarrinho();
+            mostrarMensagem("Pedido realizado com sucesso!", "sucesso");
+            mostrarTela("meus-pedidos");
+          } else {
+            mostrarMensagem("Erro ao finalizar pedido.", "erro");
+          }
+        } catch (e) {
+          mostrarMensagem("Erro de conexão com a API.", "erro");
+        }
+      }
+
+      // Consome GET /api/Pedidos — endpoint protegido
+      async function carregarMeusPedidos() {
+        const conteudo = document.getElementById("conteudo");
+        conteudo.innerHTML = "<h2>Meus Pedidos</h2><br>";
+
+        try {
+          const res = await fetch(`${API}/Pedidos`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          const pedidos = await res.json();
+
+          if (pedidos.length === 0) {
+            conteudo.innerHTML += "<p>Você ainda não tem pedidos.</p>";
+            return;
+          }
+
+          pedidos.forEach((p) => {
+            let itens = p.itens
+              .map(
+                (i) =>
+                  `<li>${i.nomeProduto} x${i.quantidade} — R$ ${i.precoUnitario.toFixed(2)}</li>`,
+              )
+              .join("");
+
+            conteudo.innerHTML += `
+                    <div class="card">
+                        <h3>Pedido #${p.id.slice(-6)}</h3>
+                        <p>Status: <strong>${p.status}</strong></p>
+                        <ul>${itens}</ul>
+                        <p class="preco">Total: R$ ${p.total.toFixed(2)}</p>
+                        <small>${new Date(p.criadoEm).toLocaleString("pt-BR")}</small>
+                    </div>
+                `;
+          });
+        } catch (e) {
+          conteudo.innerHTML +=
+            '<p class="mensagem erro">Erro ao carregar pedidos.</p>';
+        }
+      }
+
+      // ===== AUTH =====
+      function mostrarLogin() {
+        document.getElementById("conteudo").innerHTML = `
+            <div class="card" style="max-width:400px; margin:50px auto">
+                <h2>Login</h2>
+                <div id="msg-login"></div>
+                <form onsubmit="fazerLogin(event)">
+                    <input type="email" id="login-email" placeholder="Email" required>
+                    <input type="password" id="login-senha" placeholder="Senha" required>
+                    <button type="submit">Entrar</button>
+                </form>
+                <p style="margin-top:15px">
+                    Não tem conta? 
+                    <a href="#" onclick="mostrarTela('registro')">Registre-se</a>
+                </p>
+            </div>
+        `;
+      }
+
+      function mostrarRegistro() {
+        document.getElementById("conteudo").innerHTML = `
+            <div class="card" style="max-width:400px; margin:50px auto">
+                <h2>Criar Conta</h2>
+                <div id="msg-registro"></div>
+                <form onsubmit="fazerRegistro(event)">
+                    <input type="text" id="reg-nome" placeholder="Nome" required>
+                    <input type="email" id="reg-email" placeholder="Email" required>
+                    <input type="password" id="reg-senha" placeholder="Senha" required>
+                    <button type="submit">Criar Conta</button>
+                </form>
+                <p style="margin-top:15px">
+                    Já tem conta? 
+                    <a href="#" onclick="mostrarTela('login')">Faça login</a>
+                </p>
+            </div>
+        `;
+      }
+
+      // Consome POST /api/Auth/login
+      async function fazerLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById("login-email").value;
+        const senha = document.getElementById("login-senha").value;
+
+        try {
+          const res = await fetch(`${API}/Auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, senha }),
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            token = data.token;
+            localStorage.setItem("token", token);
+            atualizarNavbar();
+            mostrarTela("produtos");
+          } else {
+            document.getElementById("msg-login").innerHTML =
+              '<p class="mensagem erro">Email ou senha inválidos.</p>';
+          }
+        } catch (e) {
+          document.getElementById("msg-login").innerHTML =
+            '<p class="mensagem erro">Erro de conexão.</p>';
+        }
+      }
+
+      // Consome POST /api/Auth/registrar
+      async function fazerRegistro(e) {
+        e.preventDefault();
+        const nome = document.getElementById("reg-nome").value;
+        const email = document.getElementById("reg-email").value;
+        const senha = document.getElementById("reg-senha").value;
+
+        try {
+          const res = await fetch(`${API}/Auth/registrar`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nome, email, senha }),
+          });
+
+          if (res.ok) {
+            document.getElementById("msg-registro").innerHTML =
+              '<p class="mensagem sucesso">Conta criada! Faça login.</p>';
+            setTimeout(() => mostrarTela("login"), 1500);
+          } else {
+            document.getElementById("msg-registro").innerHTML =
+              '<p class="mensagem erro">Email já cadastrado.</p>';
+          }
+        } catch (e) {
+          document.getElementById("msg-registro").innerHTML =
+            '<p class="mensagem erro">Erro de conexão.</p>';
+        }
+      }
+
+      function logout() {
+        token = null;
+        localStorage.removeItem("token");
+        carrinho = [];
+        atualizarCarrinho();
+        atualizarNavbar();
+        mostrarTela("produtos");
+      }
+
+      function atualizarNavbar() {
+        if (token) {
+          document.getElementById("btn-login").style.display = "none";
+          document.getElementById("btn-logout").style.display = "inline";
+          document.getElementById("btn-pedidos").style.display = "inline";
+        } else {
+          document.getElementById("btn-login").style.display = "inline";
+          document.getElementById("btn-logout").style.display = "none";
+          document.getElementById("btn-pedidos").style.display = "none";
+          document.getElementById("usuario-logado").textContent = "";
+        }
+      }
+
+      function mostrarMensagem(texto, tipo) {
+        const div = document.createElement("div");
+        div.className = `mensagem ${tipo}`;
+        div.textContent = texto;
+        document.getElementById("conteudo").prepend(div);
+        setTimeout(() => div.remove(), 3000);
+      }
+
+      // Inicia na tela de produtos
+      atualizarNavbar();
+      mostrarTela("produtos");
+    </script>
+  </body>
+</html>

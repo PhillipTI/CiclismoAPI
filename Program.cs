@@ -67,6 +67,11 @@ app.UseHttpsRedirection();
 // Autenticação antes de Autorização 
 app.UseAuthorization();
 
+// Define o index.html como página padrão
+app.UseDefaultFiles();
+// Serve os arquivos estáticos do frontend (HTML, CSS, JS)
+app.UseStaticFiles();
+
 app.MapControllers();
 
 app.Run();
