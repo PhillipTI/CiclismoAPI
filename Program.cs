@@ -12,10 +12,7 @@ var mongoDatabaseName = builder.Configuration["MongoDB:DatabaseName"];
 
 // Controllers, registra os controllers da API (recursos)
 builder.Services.AddControllers();
-// AULA 5 - NoSQL / Princípio D do SOLID (Bônus D):
-// Registramos os Services para injeção de dependência.
-// O .NET vai criar uma instância de cada Service e injetar
-// automaticamente onde for necessário (Controllers).
+// Registro dos Services para injeção de dependência.
 builder.Services.AddSingleton<ProdutoService>();
 builder.Services.AddSingleton<PedidoService>();
 builder.Services.AddSingleton<AuthService>();
