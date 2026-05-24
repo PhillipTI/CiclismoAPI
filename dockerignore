@@ -1,0 +1,8 @@
+# Arquivos desnecessários (+ pesado) para entrar no docker (também dados sensíveis)
+
+**/bin
+**/obj
+**/.git
+**/.vs
+appsettings.Development.json
+.env
