@@ -17,18 +17,33 @@ builder.Services.AddSingleton<ProdutoService>();
 builder.Services.AddSingleton<PedidoService>();
 builder.Services.AddSingleton<AuthService>();
 
-// Documentação de documentação pelp Swagger
+// Documentação pelo Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new()
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.OpenApiInfo
     {
         Title = "CiclismoAPI",
         Version = "v1",
         Description = "API REST para loja de equipamentos de ciclismo"
     });
-});
 
+    // AULA 7 - JWT: Adiciona o botão Authorize no Swagger
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.ParameterLocation.Header,
+        Description = "Digite: Bearer {seu token}"
+    });
+
+  c.AddSecurityRequirement(document => new Microsoft.OpenApi.OpenApiSecurityRequirement
+    {
+        [new Microsoft.OpenApi.OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
+    });
+});
 // Configuração da autenticação com token JWT.
 var jwtSecretKey = builder.Configuration["Jwt:SecretKey"];
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
@@ -64,7 +79,10 @@ app.UseSwaggerUI(c =>
 
 app.UseHttpsRedirection();
 
-// Autenticação antes de Autorização 
+app.UseHttpsRedirection();
+
+// AULA 7 - JWT: Autenticação SEMPRE antes de Autorização
+app.UseAuthentication();
 app.UseAuthorization();
 
 // Define o index.html como página padrão

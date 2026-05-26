@@ -9,7 +9,7 @@ Esta API REST foi construida para uma loja de venda de equipamentos de ciclismo 
 
 A CiclismoShop é uma aplicação web para venda de equipamentos de ciclismo. O sistema permite o cadastro de produtos, registro e autenticação de usuários e realização de pedidos com persistência em banco de dados NoSQL (MongoDB Atlas).
 
--Domínio:
+-Domínio (http://localhost:5067/#):
 
 Loja de equipamentos de ciclismo (capacetes, bicicletas, acessórios, vestuário).
 
@@ -151,3 +151,21 @@ CiclismoAPI/
 ├── wwwroot/ # Frontend (HTML + JavaScript)
 ├── appsettings.json # Configurações gerais
 └── Program.cs # Configuração e inicialização da aplicação
+
+-Testes Unitários
+
+Os testes unitários estão no projeto `CiclismoAPI.Tests` e cobrem a camada de Services com os seguintes cenários:
+
+2 cenários de sucesso:
+-Criar produto com dados válidos
+-Buscar produto por ID existente
+
+2 cenários de erro:
+-Buscar produto por ID inexistente retornando null
+-Deletar produto inexistente retornando false
+
+Obs.: Para executar os testes, os comandos são:
+
+(bash)
+cd CiclismoAPI.Tests
+dotnet test

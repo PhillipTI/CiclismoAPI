@@ -17,7 +17,6 @@ C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoApi\bin\Debug\net10.0\Cicl
 C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoApi\bin\Debug\net10.0\CiclismoAPI.pdb
 C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoApi\bin\Debug\net10.0\DnsClient.dll
 C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoApi\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoApi\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoApi\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
 C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoApi\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoApi\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
@@ -52,3 +51,4 @@ C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoApi\obj\Debug\net10.0\ref\
 C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoAPI\bin\Debug\net10.0\BCrypt-Net-Next.dll
 C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoAPI\bin\Debug\net10.0\CiclismoAPI.staticwebassets.runtime.json
 C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoAPI\obj\Debug\net10.0\compressed\neiuylvqv0-{0}-1fku2kg7wj-1fku2kg7wj.gz
+C:\Users\phill\ProjetosApp\ProjetoApiCiclismo\CiclismoAPI\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll

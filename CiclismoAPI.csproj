@@ -9,9 +9,17 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
     <PackageReference Include="MongoDB.Driver" Version="3.8.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
+  </ItemGroup>
+
+  <!-- Exclusão o projeto de testes da compilação do projeto principal -->
+  <ItemGroup>
+    <Compile Remove="CiclismoAPI.Tests/**" />
+    <Content Remove="CiclismoAPI.Tests/**" />
+    <EmbeddedResource Remove="CiclismoAPI.Tests/**" />
+    <None Remove="CiclismoAPI.Tests/**" />
   </ItemGroup>
 
 </Project>

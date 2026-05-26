@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Net.Security;
 
 namespace CiclismoAPI.Services
 {
@@ -17,8 +18,14 @@ namespace CiclismoAPI.Services
         {
             var connectionString = configuration["MongoDB:ConnectionString"];
             var databaseName = configuration["MongoDB:DatabaseName"];
+    // Consertando o erro de sll: nao conecta com o MongoDB Atlas por causa do SSL, entao desabilitamos a validação do certificado
+        var settings = MongoClientSettings.FromConnectionString(connectionString);
+        settings.SslSettings = new SslSettings
+        {
+        ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true
+        };
+        var client = new MongoClient(settings);
 
-            var client = new MongoClient(connectionString);
             var database = client.GetDatabase(databaseName);
 
             _usuarios = database.GetCollection<Usuario>("usuarios");
