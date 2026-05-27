@@ -10,13 +10,13 @@ namespace CiclismoAPI.Controllers
     {
         private readonly AuthService _authService;
 
-       //SOLID-D: Injeção de Dependência.
+//SOLID-D: Injeção de Dependência.
         public AuthController(AuthService authService)
         {
             _authService = authService;
         }
 
-        // POST /api/auth/registrar
+// POST /api/auth/registrar
         //Segurança: senha é hasheada no Service antes de salvar
         [HttpPost("registrar")]
         public async Task<IActionResult> Registrar([FromBody] RegistrarDTO dto)
@@ -35,7 +35,7 @@ namespace CiclismoAPI.Controllers
             return StatusCode(201, new { mensagem = "Usuário registrado com sucesso", id = usuario.Id });
         }
 
-        // POST /api/auth/login
+// POST /api/auth/login
         //JWT: gera e retorna o token para o cliente usar nas próximas requisições
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO dto)

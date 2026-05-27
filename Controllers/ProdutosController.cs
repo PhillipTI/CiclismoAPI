@@ -17,7 +17,7 @@ namespace CiclismoAPI.Controllers
             _produtoService = produtoService;
         }
 
-        // GET /api/produtos
+// GET /api/produtos
         [HttpGet]
         public async Task<IActionResult> GetTodos()
         {
@@ -25,7 +25,7 @@ namespace CiclismoAPI.Controllers
             return Ok(produtos);
         }
 
-        // GET /api/produtos/{id}
+// GET /api/produtos/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPorId(string id)
         {
@@ -35,7 +35,7 @@ namespace CiclismoAPI.Controllers
             return Ok(produto);
         }
 
-        // POST /api/produtos
+// POST /api/produtos
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Criar([FromBody] ProdutoCriarDTO dto)
@@ -56,7 +56,7 @@ namespace CiclismoAPI.Controllers
             return StatusCode(201, criado);
         }
 
-        // PUT /api/produtos/{id}
+// PUT /api/produtos/{id}
         [HttpPut("{id}")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Atualizar(string id, [FromBody] ProdutoAtualizarDTO dto)
@@ -78,7 +78,7 @@ namespace CiclismoAPI.Controllers
             return Ok(new { mensagem = "Produto atualizado com sucesso" });
         }
 
-        // DELETE /api/produtos/{id}
+// DELETE /api/produtos/{id}
         [HttpDelete("{id}")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Deletar(string id)

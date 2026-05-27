@@ -24,7 +24,7 @@ namespace CiclismoAPI.Controllers
             return User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         }
 
-        // GET /api/pedidos
+// GET /api/pedidos
         [HttpGet]
         public async Task<IActionResult> GetMeusPedidos()
         {
@@ -33,7 +33,7 @@ namespace CiclismoAPI.Controllers
             return Ok(pedidos);
         }
 
-        // GET /api/pedidos/{id}
+// GET /api/pedidos/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPorId(string id)
         {
@@ -44,7 +44,7 @@ namespace CiclismoAPI.Controllers
             return Ok(pedido);
         }
 
-        // POST /api/pedidos
+// POST /api/pedidos
         [HttpPost]
         public async Task<IActionResult> Criar([FromBody] PedidoCriarDTO dto)
         {
@@ -61,12 +61,12 @@ namespace CiclismoAPI.Controllers
 
             var criado = await _pedidoService.Criar(pedido, usuarioId);
             if (criado == null)
-                return BadRequest(new { mensagem = "Um ou mais produtos não encontrados" });
+                return BadRequest(new { mensagem = "Produto não encontrado ou fora de estoque" });
 
             return StatusCode(201, criado);
         }
 
-        // PUT /api/pedidos/{id}/status
+// PUT /api/pedidos/{id}/status
         [HttpPut("{id}/status")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> AtualizarStatus(string id, [FromBody] string novoStatus)
@@ -77,7 +77,7 @@ namespace CiclismoAPI.Controllers
             return Ok(new { mensagem = "Status atualizado com sucesso" });
         }
 
-        // DELETE /api/pedidos/{id}
+// DELETE /api/pedidos/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deletar(string id)
         {
