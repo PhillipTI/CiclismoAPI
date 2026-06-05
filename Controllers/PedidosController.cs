@@ -7,6 +7,11 @@ using System.Security.Claims;
 
 namespace CiclismoAPI.Controllers
 {
+     /// <summary>
+    /// Gerencia os pedidos dos usuários autenticados.
+    /// Todos os endpoints exigem autenticação JWT.
+    /// Cada usuário acessa apenas seus próprios pedidos — proteção contra IDOR.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     [Authorize] // JWT: todos os endpoints exigem token válido
@@ -23,9 +28,16 @@ namespace CiclismoAPI.Controllers
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         }
-
+        /// <summary>Retorna todos os pedidos do usuário autenticado.</summary>
+        /// <remarks>
+        /// Retorna apenas os pedidos do usuário logado — nunca pedidos de outros usuários.
+        /// </remarks>
+        /// <response code="200">Lista de pedidos retornada com sucesso.</response>
+        /// <response code="401">Token JWT não fornecido ou inválido.</response>
 // GET /api/pedidos
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetMeusPedidos()
         {
             var usuarioId = GetUsuarioId();
@@ -33,8 +45,17 @@ namespace CiclismoAPI.Controllers
             return Ok(pedidos);
         }
 
+        /// <summary>Busca um pedido específico pelo ID.</summary>
+        /// <param name="id">ID do pedido no formato ObjectId do MongoDB.</param>
+        /// <response code="200">Pedido encontrado e retornado.</response>
+        /// <response code="404">Pedido não encontrado ou não pertence ao usuário.</response>
+        /// <response code="401">Token JWT não fornecido ou inválido.</response>
+
 // GET /api/pedidos/{id}
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetPorId(string id)
         {
             var usuarioId = GetUsuarioId();
@@ -43,9 +64,33 @@ namespace CiclismoAPI.Controllers
                 return NotFound(new { mensagem = "Pedido não encontrado" });
             return Ok(pedido);
         }
+/// <summary>Cria um novo pedido para o usuário autenticado.</summary>
+        /// <remarks>
+        /// O sistema valida automaticamente o estoque de cada produto.
+        /// O total é calculado pelo servidor com base nos preços atuais.
+        /// O estoque é decrementado após a criação do pedido.
+        ///
+        ///     POST /api/Pedidos
+        ///     {
+        ///         "itens": [
+        ///             {
+        ///                 "produtoId": "6a11f120ef624fa245292edd",
+        ///                 "quantidade": 2
+        ///             }
+        ///         ]
+        ///     }
+        /// </remarks>
+        /// <param name="dto">Lista de itens com produtoId e quantidade.</param>
+        /// <response code="201">Pedido criado com sucesso.</response>
+        /// <response code="400">Produto não encontrado ou estoque insuficiente.</response>
+        /// <response code="401">Token JWT não fornecido ou inválido.</response>
 
 // POST /api/pedidos
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
         public async Task<IActionResult> Criar([FromBody] PedidoCriarDTO dto)
         {
             var usuarioId = GetUsuarioId();
@@ -65,10 +110,29 @@ namespace CiclismoAPI.Controllers
 
             return StatusCode(201, criado);
         }
-
+        
+        /// <summary>Atualiza o status de um pedido. Requer perfil admin.</summary>
+        /// <remarks>
+        /// Status disponíveis: pendente, confirmado, enviado, entregue, cancelado.
+        /// Ao cancelar um pedido, o estoque dos produtos é automaticamente restaurado.
+        ///
+        ///     PUT /api/Pedidos/{id}/status
+        ///     "cancelado"
+        /// </remarks>
+        /// <param name="id">ID do pedido a ser atualizado.</param>
+        /// <param name="novoStatus">Novo status do pedido.</param>
+        /// <response code="200">Status atualizado com sucesso.</response>
+        /// <response code="404">Pedido não encontrado.</response>
+        /// <response code="401">Token JWT não fornecido ou inválido.</response>
+        /// <response code="403">Usuário não tem perfil admin.</response>
+        
 // PUT /api/pedidos/{id}/status
         [HttpPut("{id}/status")]
         [Authorize(Roles = "admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> AtualizarStatus(string id, [FromBody] string novoStatus)
         {
             var atualizado = await _pedidoService.AtualizarStatus(id, novoStatus);
@@ -77,8 +141,17 @@ namespace CiclismoAPI.Controllers
             return Ok(new { mensagem = "Status atualizado com sucesso" });
         }
 
+        /// <summary>Remove um pedido do histórico do usuário autenticado.</summary>
+        /// <param name="id">ID do pedido a ser removido.</param>
+        /// <response code="204">Pedido removido com sucesso.</response>
+        /// <response code="404">Pedido não encontrado ou não pertence ao usuário.</response>
+        /// <response code="401">Token JWT não fornecido ou inválido.</response>
+
 // DELETE /api/pedidos/{id}
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Deletar(string id)
         {
             var usuarioId = GetUsuarioId();

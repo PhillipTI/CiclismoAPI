@@ -79,8 +79,6 @@ Abra o navegador em: http://localhost:5067.
 
 Com o projeto rodando, acesse: http://localhost:5067/swagger.
 
-obs.: para testes de endpoints protegidos (criar produto, pedidos), utilize o "Postman" com o header "Authorization: Bearer {token}".
-
 -Variáveis de Ambiente (Variável -- Descrição -- Exemplo)
 
        Variável                          Descrição                                              Exemplo

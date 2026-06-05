@@ -18,6 +18,7 @@ namespace CiclismoAPI.Services
         {
             var connectionString = configuration["MongoDB:ConnectionString"];
             var databaseName = configuration["MongoDB:DatabaseName"];
+            
     // Consertando o erro de sll: nao conecta com o MongoDB Atlas por causa do SSL, entao desabilitamos a validação do certificado
         var settings = MongoClientSettings.FromConnectionString(connectionString);
         settings.SslSettings = new SslSettings
@@ -89,7 +90,8 @@ namespace CiclismoAPI.Services
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id!),
                 new Claim(ClaimTypes.Name, usuario.Nome),
                 new Claim(ClaimTypes.Email, usuario.Email),
-                // AULA 7 - JWT/RBAC: A Role no token define o que o usuário pode fazer
+                
+                // JWT/RBAC: A Role no token define o que o usuário pode fazer
                 new Claim(ClaimTypes.Role, usuario.Role)
             };
 

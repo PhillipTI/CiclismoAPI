@@ -169,7 +169,6 @@
       let token = localStorage.getItem("token");
       let carrinho = [];
 
-      // ===== NAVEGAÇÃO ASSÍNCRONA =====
       // Atualiza apenas o conteúdo da página sem recarregar
       function mostrarTela(tela) {
         const conteudo = document.getElementById("conteudo");
@@ -182,8 +181,7 @@
         else if (tela === "meus-pedidos") carregarMeusPedidos();
       }
 
-      // ===== PRODUTOS =====
-      // Consome GET /api/Produtos — endpoint público
+      // Produtos: Consome GET /api/Produtos — endpoint público
       async function carregarProdutos() {
         const conteudo = document.getElementById("conteudo");
         conteudo.innerHTML = "<h2>Nossos Produtos</h2><br>";
@@ -222,7 +220,7 @@
         }
       }
 
-      // ===== CARRINHO =====
+      // Carrinho
       function adicionarCarrinho(id, nome, preco) {
         if (!token) {
           alert("Faça login para adicionar ao carrinho!");
@@ -315,8 +313,7 @@
         mostrarCarrinho();
       }
 
-      // ===== PEDIDOS =====
-      // Consome POST /api/Pedidos — endpoint protegido
+      // Pedidos: Consome POST /api/Pedidos — endpoint protegido
       async function finalizarPedido() {
         const itens = carrinho.map((i) => ({
           produtoId: i.produtoId,

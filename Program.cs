@@ -27,6 +27,10 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Description = "API REST para loja de equipamentos de ciclismo"
     });
+    // Habilita os comentários XML no Swagger
+var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+c.IncludeXmlComments(xmlPath);
 
     // AULA 7 - JWT: Adiciona o botão Authorize no Swagger
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.OpenApiSecurityScheme
