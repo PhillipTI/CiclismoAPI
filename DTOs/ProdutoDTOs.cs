@@ -19,4 +19,14 @@ namespace CiclismoAPI.DTOs
         public decimal Preco { get; set; }
         public int Estoque { get; set; }
     }
+
+    // PATCH DTO — todos os campos são opcionais 
+public class ProdutoPatchDTO
+{
+    public string? Nome { get; set; }
+    public string? Descricao { get; set; }
+    public string? Categoria { get; set; }
+    public decimal? Preco { get; set; }
+    public int? Estoque { get; set; }
+}
 }

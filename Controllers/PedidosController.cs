@@ -111,35 +111,42 @@ namespace CiclismoAPI.Controllers
             return StatusCode(201, criado);
         }
         
-        /// <summary>Atualiza o status de um pedido. Requer perfil admin.</summary>
-        /// <remarks>
-        /// Status disponíveis: pendente, confirmado, enviado, entregue, cancelado.
-        /// Ao cancelar um pedido, o estoque dos produtos é automaticamente restaurado.
-        ///
-        ///     PUT /api/Pedidos/{id}/status
-        ///     "cancelado"
-        /// </remarks>
-        /// <param name="id">ID do pedido a ser atualizado.</param>
-        /// <param name="novoStatus">Novo status do pedido.</param>
-        /// <response code="200">Status atualizado com sucesso.</response>
-        /// <response code="404">Pedido não encontrado.</response>
-        /// <response code="401">Token JWT não fornecido ou inválido.</response>
-        /// <response code="403">Usuário não tem perfil admin.</response>
-        
-// PUT /api/pedidos/{id}/status
-        [HttpPut("{id}/status")]
-        [Authorize(Roles = "admin")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> AtualizarStatus(string id, [FromBody] string novoStatus)
-        {
-            var atualizado = await _pedidoService.AtualizarStatus(id, novoStatus);
-            if (!atualizado)
-                return NotFound(new { mensagem = "Pedido não encontrado" });
-            return Ok(new { mensagem = "Status atualizado com sucesso" });
-        }
+/// <summary>Atualiza parcialmente um pedido. Requer perfil admin.</summary>
+/// <remarks>
+/// Permite atualizar o status do pedido. Ao cancelar, o estoque é restaurado automaticamente.
+///
+/// Status disponíveis: pendente, confirmado, enviado, entregue, cancelado.
+///
+///     PATCH /api/Pedidos/{id}
+///     {
+///         "status": "confirmado"
+///     }
+/// </remarks>
+/// <param name="id">ID do pedido a ser atualizado.</param>
+/// <param name="dto">Campo status com o novo valor.</param>
+/// <response code="200">Pedido atualizado com sucesso.</response>
+/// <response code="404">Pedido não encontrado.</response>
+/// <response code="401">Token JWT não fornecido ou inválido.</response>
+/// <response code="403">Usuário não tem perfil admin.</response>
+
+// PATCH /api/pedidos/{id}
+[HttpPatch("{id}")]
+[Authorize(Roles = "admin")]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status404NotFound)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(StatusCodes.Status403Forbidden)]
+public async Task<IActionResult> Patch(string id, [FromBody] PedidoPatchDTO dto)
+{
+    if (dto.Status == null)
+        return BadRequest(new { mensagem = "Nenhum campo válido enviado para atualização" });
+
+    var atualizado = await _pedidoService.AtualizarStatus(id, dto.Status);
+    if (!atualizado)
+        return NotFound(new { mensagem = "Pedido não encontrado" });
+
+    return Ok(new { mensagem = "Pedido atualizado com sucesso" });
+}
 
         /// <summary>Remove um pedido do histórico do usuário autenticado.</summary>
         /// <param name="id">ID do pedido a ser removido.</param>

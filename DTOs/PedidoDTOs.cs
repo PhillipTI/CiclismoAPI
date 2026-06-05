@@ -10,4 +10,10 @@ namespace CiclismoAPI.DTOs
     {
         public List<ItemPedidoDTO> Itens { get; set; } = new();
     }
-}
+
+    // PATCH DTO para Pedido — permite atualizar campos específicos
+    public class PedidoPatchDTO
+    {
+    public string? Status { get; set; }
+    }
+    }

@@ -94,6 +94,51 @@ namespace CiclismoAPI.Controllers
             return StatusCode(201, criado);
         }
 
+        /// <summary>Atualiza parcialmente um produto. Requer perfil admin.</summary>
+/// <remarks>
+/// Envie apenas os campos que deseja alterar. Campos não enviados permanecem inalterados.
+///
+///     PATCH /api/Produtos/{id}
+///     {
+///         "preco": 259.90
+///     }
+///
+/// Ou para atualizar apenas o estoque:
+///
+///     PATCH /api/Produtos/{id}
+///     {
+///         "estoque": 15
+///     }
+/// </remarks>
+/// <param name="id">ID do produto a ser atualizado parcialmente.</param>
+/// <param name="dto">Campos a serem atualizados — apenas os campos enviados serão modificados.</param>
+/// <response code="200">Produto atualizado parcialmente com sucesso.</response>
+/// <response code="400">Nenhum campo válido enviado para atualização.</response>
+/// <response code="404">Produto não encontrado.</response>
+/// <response code="401">Token JWT não fornecido ou inválido.</response>
+/// <response code="403">Usuário não tem perfil admin.</response>
+
+// PATH /api/produtos/{id}
+[HttpPatch("{id}")]
+[Authorize(Roles = "admin")]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
+[ProducesResponseType(StatusCodes.Status404NotFound)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(StatusCodes.Status403Forbidden)]
+public async Task<IActionResult> Patch(string id, [FromBody] ProdutoPatchDTO dto)
+{
+    var existente = await _produtoService.BuscarPorId(id);
+    if (existente == null)
+        return NotFound(new { mensagem = "Produto não encontrado" });
+
+    var atualizado = await _produtoService.Patch(id, dto);
+    if (!atualizado)
+        return BadRequest(new { mensagem = "Nenhum campo válido enviado para atualização" });
+
+    return Ok(new { mensagem = "Produto atualizado parcialmente com sucesso" });
+}
+
 /// <summary>Atualiza completamente um produto existente. Requer perfil admin.</summary>
         /// <remarks>
         ///     PUT /api/Produtos/{id}

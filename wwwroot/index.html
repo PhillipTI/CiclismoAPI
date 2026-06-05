@@ -4,176 +4,1129 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CiclismoShop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      :root {
+        --dark: #0d0d1a;
+        --navy: #1a1a2e;
+        --navy2: #16213e;
+        --red: #e94560;
+        --red2: #c73652;
+        --gold: #f0a500;
+        --light: #f4f4f8;
+        --gray: #888;
+        --card-bg: #ffffff;
+        --border: #e0e0e0;
+        --success: #27ae60;
+        --font-head: "Bebas Neue", sans-serif;
+        --font-body: "Rajdhani", sans-serif;
+      }
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
       body {
-        font-family: Arial, sans-serif;
-        background: #f0f0f0;
-        color: #333;
+        font-family: var(--font-body);
+        background: var(--light);
+        color: #222;
+        overflow-x: hidden;
       }
 
+      /* ===== HEADER ===== */
       header {
-        background: #1a1a2e;
+        background: var(--navy);
+        padding: 0 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 70px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+      }
+      .logo {
+        font-family: var(--font-head);
+        font-size: 28px;
         color: white;
-        padding: 15px 30px;
+        letter-spacing: 2px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .logo span {
+        color: var(--red);
+      }
+      .logo-icon {
+        font-size: 24px;
+      }
+
+      .nav-center {
+        display: flex;
+        gap: 6px;
+      }
+      .nav-btn {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.85);
+        padding: 7px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: var(--font-body);
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.2s;
+      }
+      .nav-btn:hover {
+        background: var(--red);
+        border-color: var(--red);
+        color: white;
+      }
+      .nav-btn.active {
+        background: var(--red);
+        border-color: var(--red);
+        color: white;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .user-badge {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        display: none;
+      }
+      .admin-badge {
+        background: var(--gold);
+        color: var(--dark);
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        display: none;
+      }
+      .cart-btn {
+        background: var(--red);
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: var(--font-body);
+        font-size: 14px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.2s;
+      }
+      .cart-btn:hover {
+        background: var(--red2);
+      }
+      .cart-count {
+        background: white;
+        color: var(--red);
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      /* ===== HERO BANNER ===== */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          var(--dark) 0%,
+          var(--navy2) 50%,
+          #1e0a1e 100%
+        );
+        padding: 60px 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(233, 69, 96, 0.15) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .hero-text h1 {
+        font-family: var(--font-head);
+        font-size: 64px;
+        color: white;
+        letter-spacing: 3px;
+        line-height: 1;
+        margin-bottom: 12px;
+      }
+      .hero-text h1 span {
+        color: var(--red);
+      }
+      .hero-text p {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 16px;
+        margin-bottom: 24px;
+        max-width: 400px;
+      }
+      .hero-cta {
+        background: var(--red);
+        color: white;
+        border: none;
+        padding: 14px 32px;
+        font-family: var(--font-head);
+        font-size: 20px;
+        letter-spacing: 2px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.2s;
+      }
+      .hero-cta:hover {
+        background: var(--red2);
+        transform: translateY(-2px);
+      }
+      .hero-stats {
+        display: flex;
+        gap: 40px;
+      }
+      .stat {
+        text-align: center;
+      }
+      .stat-num {
+        font-family: var(--font-head);
+        font-size: 48px;
+        color: var(--red);
+        line-height: 1;
+      }
+      .stat-label {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      /* ===== MAIN CONTENT ===== */
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* ===== SECTION TITLE ===== */
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 32px 0 20px;
+        border-bottom: 2px solid var(--border);
+        margin-bottom: 24px;
+      }
+      .section-title {
+        font-family: var(--font-head);
+        font-size: 32px;
+        letter-spacing: 2px;
+        color: var(--navy);
+      }
+      .section-title span {
+        color: var(--red);
+      }
+
+      /* ===== PRODUCT GRID ===== */
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+      .product-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s;
+        position: relative;
+      }
+      .product-card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        transform: translateY(-4px);
+      }
+      .product-img {
+        background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        position: relative;
+      }
+      .product-category-tag {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: var(--navy);
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        padding: 3px 8px;
+        border-radius: 3px;
+        text-transform: uppercase;
+      }
+      .stock-tag {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: var(--success);
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 3px;
+      }
+      .stock-tag.low {
+        background: #e67e22;
+      }
+      .stock-tag.out {
+        background: #c0392b;
+      }
+      .product-info {
+        padding: 16px;
+      }
+      .product-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--navy);
+        margin-bottom: 4px;
+        line-height: 1.3;
+      }
+      .product-desc {
+        font-size: 13px;
+        color: var(--gray);
+        margin-bottom: 12px;
+        line-height: 1.4;
+      }
+      .product-price {
+        font-family: var(--font-head);
+        font-size: 28px;
+        color: var(--red);
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+      }
+      .product-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .btn-buy {
+        flex: 1;
+        background: var(--navy);
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        font-family: var(--font-body);
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+        letter-spacing: 0.5px;
+      }
+      .btn-buy:hover {
+        background: var(--red);
+      }
+      .btn-admin-action {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--gray);
+        width: 36px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s;
+        display: none;
+      }
+      .btn-admin-action.edit:hover {
+        background: #3498db;
+        color: white;
+        border-color: #3498db;
+      }
+      .btn-admin-action.del:hover {
+        background: var(--red);
+        color: white;
+        border-color: var(--red);
+      }
+      .btn-admin-action.locked {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* ===== ADMIN PANEL ===== */
+      .admin-panel {
+        background: white;
+        border: 2px solid var(--gold);
+        border-radius: 8px;
+        margin: 24px 0;
+        overflow: hidden;
+        display: none;
+      }
+      .admin-panel-header {
+        background: linear-gradient(90deg, var(--dark), var(--navy));
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+      }
+      .admin-panel-title {
+        font-family: var(--font-head);
+        font-size: 20px;
+        color: var(--gold);
+        letter-spacing: 2px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .admin-panel-body {
+        padding: 24px;
+        display: none;
+      }
+      .admin-panel-body.open {
+        display: block;
+      }
+      .admin-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 0;
+      }
+      .admin-tab {
+        background: transparent;
+        border: none;
+        padding: 10px 20px;
+        font-family: var(--font-body);
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        color: var(--gray);
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        transition: all 0.2s;
+        letter-spacing: 0.5px;
+      }
+      .admin-tab:hover {
+        color: var(--red);
+      }
+      .admin-tab.active {
+        color: var(--red);
+        border-bottom-color: var(--red);
+      }
+      .admin-content {
+        display: none;
+      }
+      .admin-content.active {
+        display: block;
+      }
+
+      /* ===== FORMS ===== */
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .form-group.full {
+        grid-column: 1 / -1;
+      }
+      .form-group label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--navy);
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 10px 12px;
+        font-family: var(--font-body);
+        font-size: 15px;
+        transition: border-color 0.2s;
+        background: var(--light);
+      }
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--red);
+        background: white;
+      }
+      .btn-submit {
+        background: var(--red);
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 4px;
+        font-family: var(--font-head);
+        font-size: 18px;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-submit:hover {
+        background: var(--red2);
+        transform: translateY(-1px);
+      }
+
+      /* ===== ORDERS TABLE ===== */
+      .orders-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .orders-table th {
+        background: var(--navy);
+        color: white;
+        padding: 12px 16px;
+        font-family: var(--font-body);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-align: left;
+      }
+      .orders-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+      .orders-table tr:hover td {
+        background: #f8f8f8;
+      }
+      .status-badge {
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .status-pendente {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .status-confirmado {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
+      .status-enviado {
+        background: #d4edda;
+        color: #155724;
+      }
+      .status-entregue {
+        background: #d4edda;
+        color: #155724;
+      }
+      .status-cancelado {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .status-select {
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-family: var(--font-body);
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .btn-update-status {
+        background: var(--navy);
+        color: white;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        transition: background 0.2s;
+      }
+      .btn-update-status:hover {
+        background: var(--red);
+      }
+
+      /* ===== MY ORDERS ===== */
+      .order-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        margin-bottom: 16px;
+        overflow: hidden;
+      }
+      .order-card-header {
+        background: var(--navy);
+        color: white;
+        padding: 12px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
-      header h1 {
-        font-size: 24px;
-        color: #e94560;
+      .order-id {
+        font-family: var(--font-head);
+        font-size: 18px;
+        letter-spacing: 2px;
       }
-      nav button {
-        background: none;
-        border: 1px solid #e94560;
-        color: white;
-        padding: 8px 16px;
-        margin-left: 10px;
-        cursor: pointer;
+      .order-card-body {
+        padding: 16px 20px;
+      }
+      .order-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+      .order-item:last-child {
+        border-bottom: none;
+      }
+      .order-total {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 12px;
+        font-family: var(--font-head);
+        font-size: 22px;
+        color: var(--red);
+        letter-spacing: 1px;
+      }
+
+      /* ===== CART ===== */
+      .cart-item {
+        background: white;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      }
+      .cart-item-icon {
+        font-size: 36px;
+      }
+      .cart-item-info {
+        flex: 1;
+      }
+      .cart-item-name {
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--navy);
+      }
+      .cart-item-price {
+        color: var(--red);
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .qty-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--light);
         border-radius: 4px;
+        padding: 4px 8px;
       }
-      nav button:hover {
-        background: #e94560;
+      .qty-btn {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: var(--navy);
+        font-weight: 700;
+        line-height: 1;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
+        transition: all 0.2s;
       }
-
-      #conteudo {
-        padding: 30px;
-        max-width: 1100px;
-        margin: 0 auto;
+      .qty-btn:hover {
+        background: var(--red);
+        color: white;
       }
-
-      .card {
+      .qty-num {
+        font-weight: 700;
+        font-size: 16px;
+        min-width: 24px;
+        text-align: center;
+      }
+      .btn-remove {
+        background: transparent;
+        border: 1px solid #ddd;
+        color: var(--red);
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+      .btn-remove:hover {
+        background: var(--red);
+        color: white;
+        border-color: var(--red);
+      }
+      .cart-summary {
         background: white;
         border-radius: 8px;
         padding: 20px;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       }
-      .card h3 {
-        color: #1a1a2e;
-        margin-bottom: 8px;
+      .cart-total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
       }
-      .card .preco {
-        color: #e94560;
-        font-size: 20px;
-        font-weight: bold;
+      .cart-total-label {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--gray);
       }
-      .card button {
-        margin-top: 10px;
-        background: #e94560;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        cursor: pointer;
+      .cart-total-value {
+        font-family: var(--font-head);
+        font-size: 36px;
+        color: var(--red);
+        letter-spacing: 1px;
       }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-      }
-
-      form input {
+      .btn-checkout {
         width: 100%;
-        padding: 10px;
-        margin: 8px 0;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
-      form button {
-        background: #1a1a2e;
+        background: var(--red);
         color: white;
         border: none;
-        padding: 10px 20px;
+        padding: 16px;
         border-radius: 4px;
+        font-family: var(--font-head);
+        font-size: 22px;
+        letter-spacing: 3px;
         cursor: pointer;
-        margin-top: 10px;
+        transition: all 0.2s;
       }
-      form button:hover {
-        background: #e94560;
+      .btn-checkout:hover {
+        background: var(--red2);
       }
 
-      .mensagem {
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 4px;
+      /* ===== AUTH FORMS ===== */
+      .auth-wrapper {
+        max-width: 440px;
+        margin: 40px auto;
       }
-      .sucesso {
+      .auth-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+      .auth-header {
+        background: linear-gradient(135deg, var(--dark), var(--navy));
+        padding: 32px;
+        text-align: center;
+      }
+      .auth-title {
+        font-family: var(--font-head);
+        font-size: 36px;
+        color: white;
+        letter-spacing: 3px;
+      }
+      .auth-subtitle {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 14px;
+        margin-top: 4px;
+      }
+      .auth-body {
+        padding: 32px;
+      }
+      .auth-input {
+        width: 100%;
+        border: 2px solid var(--border);
+        border-radius: 4px;
+        padding: 12px 16px;
+        font-family: var(--font-body);
+        font-size: 15px;
+        margin-bottom: 12px;
+        transition: border-color 0.2s;
+      }
+      .auth-input:focus {
+        outline: none;
+        border-color: var(--red);
+      }
+      .auth-btn {
+        width: 100%;
+        background: var(--red);
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 4px;
+        font-family: var(--font-head);
+        font-size: 22px;
+        letter-spacing: 3px;
+        cursor: pointer;
+        margin-top: 8px;
+        transition: background 0.2s;
+      }
+      .auth-btn:hover {
+        background: var(--red2);
+      }
+      .auth-footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        color: var(--gray);
+      }
+      .auth-footer a {
+        color: var(--red);
+        cursor: pointer;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      /* ===== MESSAGES ===== */
+      .msg {
+        padding: 12px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        animation: slideIn 0.3s ease;
+      }
+      .msg-success {
         background: #d4edda;
         color: #155724;
+        border-left: 4px solid var(--success);
       }
-      .erro {
+      .msg-error {
         background: #f8d7da;
         color: #721c24;
+        border-left: 4px solid var(--red);
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
-      .badge {
-        background: #e94560;
-        color: white;
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 12px;
-        margin-left: 8px;
+      /* ===== EMPTY STATE ===== */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--gray);
+      }
+      .empty-state-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+      }
+      .empty-state h3 {
+        font-family: var(--font-head);
+        font-size: 28px;
+        letter-spacing: 2px;
+        color: var(--navy);
+        margin-bottom: 8px;
       }
 
-      #carrinho-flutuante {
+      /* ===== MODAL ===== */
+      .modal-overlay {
         position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #1a1a2e;
-        color: white;
-        padding: 12px 20px;
-        border-radius: 30px;
-        cursor: pointer;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         display: none;
+      }
+      .modal {
+        background: white;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 520px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+      .modal-header {
+        background: var(--navy);
+        padding: 20px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .modal-title {
+        font-family: var(--font-head);
+        font-size: 22px;
+        color: white;
+        letter-spacing: 2px;
+      }
+      .modal-close {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 20px;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+      .modal-close:hover {
+        color: white;
+      }
+      .modal-body {
+        padding: 24px;
+      }
+
+      /* ===== LOADING ===== */
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: var(--gray);
+        font-size: 16px;
+      }
+
+      /* ===== FOOTER ===== */
+      footer {
+        background: var(--dark);
+        color: rgba(255, 255, 255, 0.4);
+        text-align: center;
+        padding: 20px;
+        font-size: 13px;
+        margin-top: 60px;
       }
     </style>
   </head>
   <body>
+    <!-- HEADER -->
     <header>
-      <h1>🚴 CiclismoShop</h1>
-      <nav>
-        <button onclick="mostrarTela('produtos')">Produtos</button>
-        <button onclick="mostrarTela('login')" id="btn-login">Login</button>
+      <div class="logo">
+        <span class="logo-icon"></span>
+        CICLISMO<span>SHOP</span>
+      </div>
+      <nav class="nav-center">
+        <button class="nav-btn" onclick="mostrarTela('produtos')">
+          Produtos
+        </button>
         <button
+          class="nav-btn"
+          id="btn-meus-pedidos"
           onclick="mostrarTela('meus-pedidos')"
-          id="btn-pedidos"
           style="display: none"
         >
           Meus Pedidos
         </button>
-        <button onclick="logout()" id="btn-logout" style="display: none">
+        <button
+          class="nav-btn"
+          id="btn-login-nav"
+          onclick="mostrarTela('login')"
+        >
+          Login
+        </button>
+        <button
+          class="nav-btn"
+          id="btn-logout"
+          onclick="logout()"
+          style="display: none"
+        >
           Sair
         </button>
-        <span
-          id="usuario-logado"
-          style="margin-left: 15px; color: #e94560"
-        ></span>
       </nav>
+      <div class="nav-right">
+        <span class="admin-badge" id="admin-badge">⚙ ADMIN</span>
+        <span class="user-badge" id="user-badge"></span>
+        <button
+          class="cart-btn"
+          onclick="mostrarTela('carrinho')"
+          id="cart-btn"
+          style="display: none"
+        >
+          🛒 Carrinho <span class="cart-count" id="cart-count">0</span>
+        </button>
+      </div>
     </header>
 
-    <div id="conteudo"></div>
-
-    <div id="carrinho-flutuante" onclick="mostrarTela('carrinho')">
-      🛒 Carrinho <span id="qtd-carrinho" class="badge">0</span>
+    <!-- HERO -->
+    <div class="hero" id="hero-section">
+      <div class="hero-text">
+        <h1>EQUIPE-SE<br />PARA <span>PEDALAR</span></h1>
+        <p>
+          Os melhores equipamentos de ciclismo com entrega rápida e qualidade
+          garantida.
+        </p>
+        <button class="hero-cta" onclick="mostrarTela('produtos')">
+          VER PRODUTOS
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Produtos</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">24h</div>
+          <div class="stat-label">Entrega</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">5★</div>
+          <div class="stat-label">Avaliação</div>
+        </div>
+      </div>
     </div>
+
+    <!-- MAIN -->
+    <main>
+      <div id="msgs-global"></div>
+      <div id="conteudo"></div>
+    </main>
+
+    <!-- MODAL PATCH PRODUTO -->
+    <div class="modal-overlay" id="modal-patch">
+      <div class="modal">
+        <div class="modal-header">
+          <span class="modal-title">✏ EDITAR PRODUTO</span>
+          <button class="modal-close" onclick="fecharModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 13px; color: var(--gray); margin-bottom: 16px">
+            Preencha apenas os campos que deseja alterar. Campos em branco não
+            serão modificados.
+          </p>
+          <input type="hidden" id="patch-id" />
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nome</label>
+              <input type="text" id="patch-nome" placeholder="Manter atual" />
+            </div>
+            <div class="form-group">
+              <label>Categoria</label>
+              <input
+                type="text"
+                id="patch-categoria"
+                placeholder="Manter atual"
+              />
+            </div>
+            <div class="form-group full">
+              <label>Descrição</label>
+              <input
+                type="text"
+                id="patch-descricao"
+                placeholder="Manter atual"
+              />
+            </div>
+            <div class="form-group">
+              <label>Preço (R$)</label>
+              <input
+                type="number"
+                id="patch-preco"
+                placeholder="Manter atual"
+                step="0.01"
+              />
+            </div>
+            <div class="form-group">
+              <label>Estoque</label>
+              <input
+                type="number"
+                id="patch-estoque"
+                placeholder="Manter atual"
+              />
+            </div>
+          </div>
+          <button class="btn-submit" onclick="salvarPatch()">
+            SALVAR ALTERAÇÕES
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      © 2026 CiclismoShop — API REST + MongoDB Atlas + JWT | Arquitetura de
+      Aplicações Web
+    </footer>
 
     <script>
       const API = "http://localhost:5067/api";
       let token = localStorage.getItem("token");
+      let userRole = localStorage.getItem("userRole");
+      let userName = localStorage.getItem("userName");
       let carrinho = [];
 
-      // Atualiza apenas o conteúdo da página sem recarregar
-      function mostrarTela(tela) {
-        const conteudo = document.getElementById("conteudo");
-        conteudo.innerHTML = "";
+      // ===== INICIALIZAÇÃO =====
+      function init() {
+        atualizarNavbar();
+        mostrarTela("produtos");
+      }
 
+      function atualizarNavbar() {
+        const isLogged = !!token;
+        const isAdmin = userRole === "admin";
+
+        document.getElementById("btn-login-nav").style.display = isLogged
+          ? "none"
+          : "inline-block";
+        document.getElementById("btn-logout").style.display = isLogged
+          ? "inline-block"
+          : "none";
+        document.getElementById("btn-meus-pedidos").style.display = isLogged
+          ? "inline-block"
+          : "none";
+        document.getElementById("cart-btn").style.display = isLogged
+          ? "flex"
+          : "none";
+        document.getElementById("admin-badge").style.display = isAdmin
+          ? "inline-block"
+          : "none";
+        document.getElementById("user-badge").style.display =
+          isLogged && !isAdmin ? "inline-block" : "none";
+        if (isLogged)
+          document.getElementById("user-badge").textContent =
+            "👤 " + (userName || "Usuário");
+        atualizarCarrinhoCount();
+      }
+
+      // ===== NAVEGAÇÃO =====
+      function mostrarTela(tela) {
+        document.getElementById("conteudo").innerHTML = "";
+        document.getElementById("hero-section").style.display =
+          tela === "produtos" ? "flex" : "none";
         if (tela === "produtos") carregarProdutos();
         else if (tela === "login") mostrarLogin();
         else if (tela === "registro") mostrarRegistro();
@@ -181,145 +1134,464 @@
         else if (tela === "meus-pedidos") carregarMeusPedidos();
       }
 
-      // Produtos: Consome GET /api/Produtos — endpoint público
+      // ===== PRODUTOS =====
       async function carregarProdutos() {
-        const conteudo = document.getElementById("conteudo");
-        conteudo.innerHTML = "<h2>Nossos Produtos</h2><br>";
+        const c = document.getElementById("conteudo");
+        c.innerHTML = `
+    <div class="section-header">
+      <div class="section-title">NOSSOS <span>PRODUTOS</span></div>
+    </div>
+  `;
+
+        // Admin panel
+        if (userRole === "admin") {
+          c.innerHTML += buildAdminPanel();
+        }
+
+        c.innerHTML += '<div class="loading">Carregando produtos...</div>';
 
         try {
           const res = await fetch(`${API}/Produtos`);
           const produtos = await res.json();
+          const loading = c.querySelector(".loading");
+          if (loading) loading.remove();
 
           if (produtos.length === 0) {
-            conteudo.innerHTML += "<p>Nenhum produto cadastrado ainda.</p>";
+            c.innerHTML += `
+        <div class="empty-state">
+          <div class="empty-state-icon">🚴</div>
+          <h3>NENHUM PRODUTO CADASTRADO</h3>
+          <p>Adicione produtos pelo painel admin.</p>
+        </div>`;
             return;
           }
 
           const grid = document.createElement("div");
-          grid.className = "grid";
-
+          grid.className = "product-grid";
           produtos.forEach((p) => {
-            grid.innerHTML += `
-                    <div class="card">
-                        <h3>${p.nome}</h3>
-                        <p>${p.descricao}</p>
-                        <p><small>Categoria: ${p.categoria}</small></p>
-                        <p><small>Estoque: ${p.estoque} unidades</small></p>
-                        <p class="preco">R$ ${p.preco.toFixed(2)}</p>
-                        <button onclick="adicionarCarrinho('${p.id}', '${p.nome}', ${p.preco})">
-                            🛒 Adicionar ao Carrinho
-                        </button>
-                    </div>
-                `;
+            grid.innerHTML += buildProductCard(p);
           });
+          c.appendChild(grid);
 
-          conteudo.appendChild(grid);
+          // Listeners para admin
+          if (userRole === "admin") {
+            bindAdminListeners();
+          }
         } catch (e) {
-          conteudo.innerHTML +=
-            '<p class="mensagem erro">Erro ao carregar produtos.</p>';
+          c.innerHTML += `<div class="msg msg-error">Erro ao carregar produtos.</div>`;
         }
       }
 
-      // Carrinho
+      function buildProductCard(p) {
+        const emoji = getCategoryEmoji(p.categoria);
+        const stockClass = p.estoque === 0 ? "out" : p.estoque < 3 ? "low" : "";
+        const stockText =
+          p.estoque === 0
+            ? "Esgotado"
+            : p.estoque < 3
+              ? `Só ${p.estoque} restam`
+              : `${p.estoque} em estoque`;
+        const isAdmin = userRole === "admin";
+        const isUser = token && userRole !== "admin";
+
+        const adminBtns = isAdmin
+          ? `<button class="btn-admin-action edit" 
+          style="display:flex;align-items:center;justify-content:center;"
+          data-id="${p.id}" 
+          data-produto='${JSON.stringify(p).replace(/'/g, "\\'")}' 
+          title="Editar produto">✏</button>
+       <button class="btn-admin-action del" 
+          style="display:flex;align-items:center;justify-content:center;"
+          data-id="${p.id}" 
+          title="Deletar produto">🗑</button>`
+          : isUser
+            ? `<button class="btn-admin-action locked" title="Apenas admins podem editar" disabled>🔒</button>
+       <button class="btn-admin-action locked" title="Apenas admins podem deletar" disabled>🔒</button>`
+            : "";
+
+        return `
+    <div class="product-card">
+      <div class="product-img">
+        <span class="product-category-tag">${p.categoria || "Geral"}</span>
+        ${p.estoque <= 5 ? `<span class="stock-tag ${stockClass}">${stockText}</span>` : ""}
+        ${emoji}
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.nome}</div>
+        <div class="product-desc">${p.descricao || ""}</div>
+        <div class="product-price">R$ ${p.preco.toFixed(2)}</div>
+        <div class="product-actions">
+          <button class="btn-buy" onclick="adicionarCarrinho('${p.id}','${p.nome}',${p.preco})"
+            ${p.estoque === 0 ? 'disabled style="opacity:.5;cursor:not-allowed"' : ""}>
+            ${p.estoque === 0 ? "ESGOTADO" : "🛒 COMPRAR"}
+          </button>
+          ${adminBtns}
+        </div>
+      </div>
+    </div>`;
+      }
+
+      function getCategoryEmoji(cat) {
+        if (!cat) return "🚲";
+        const c = cat.toLowerCase();
+        if (c.includes("capacete") || c.includes("segu")) return "⛑";
+        if (c.includes("roupa") || c.includes("vest")) return "👕";
+        if (c.includes("biciclet") || c.includes("quadro")) return "🚴";
+        if (c.includes("pneu") || c.includes("roda")) return "🔧";
+        if (c.includes("acess")) return "🎒";
+        if (c.includes("luva")) return "🧤";
+        return "🚲";
+      }
+
+      function bindAdminListeners() {
+        document.querySelectorAll(".btn-admin-action.edit").forEach((btn) => {
+          btn.addEventListener("click", () =>
+            abrirModalPatch(btn.dataset.id, btn.dataset.produto),
+          );
+        });
+        document.querySelectorAll(".btn-admin-action.del").forEach((btn) => {
+          btn.addEventListener("click", () => deletarProduto(btn.dataset.id));
+        });
+      }
+
+      // ===== ADMIN PANEL =====
+      function buildAdminPanel() {
+        return `
+  <div class="admin-panel" id="admin-panel" style="display:block">
+    <div class="admin-panel-header" onclick="toggleAdminPanel()">
+      <span class="admin-panel-title">⚙ PAINEL ADMINISTRATIVO</span>
+      <span style="color:var(--gold);font-size:12px;letter-spacing:1px">CLIQUE PARA EXPANDIR ▼</span>
+    </div>
+    <div class="admin-panel-body" id="admin-panel-body">
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchAdminTab('criar')">➕ CRIAR PRODUTO</button>
+        <button class="admin-tab" onclick="switchAdminTab('pedidos')">📋 GERENCIAR PEDIDOS</button>
+      </div>
+      <div class="admin-content active" id="tab-criar">
+        <div id="msg-criar"></div>
+        <div class="form-grid">
+          <div class="form-group"><label>Nome *</label><input type="text" id="c-nome" placeholder="Ex: Capacete MTB Pro"></div>
+          <div class="form-group"><label>Categoria *</label><input type="text" id="c-cat" placeholder="Ex: Segurança"></div>
+          <div class="form-group full"><label>Descrição</label><input type="text" id="c-desc" placeholder="Descrição do produto"></div>
+          <div class="form-group"><label>Preço (R$) *</label><input type="number" id="c-preco" placeholder="0.00" step="0.01"></div>
+          <div class="form-group"><label>Estoque *</label><input type="number" id="c-estoque" placeholder="0"></div>
+        </div>
+        <button class="btn-submit" onclick="criarProduto()">CADASTRAR PRODUTO</button>
+      </div>
+      <div class="admin-content" id="tab-pedidos">
+        <div id="msg-pedidos-admin"></div>
+        <div id="tabela-pedidos-admin"><div class="loading">Carregando pedidos...</div></div>
+      </div>
+    </div>
+  </div>`;
+      }
+
+      function toggleAdminPanel() {
+        const body = document.getElementById("admin-panel-body");
+        if (body.classList.contains("open")) {
+          body.classList.remove("open");
+        } else {
+          body.classList.add("open");
+          if (
+            document.getElementById("tab-pedidos").classList.contains("active")
+          ) {
+            carregarPedidosAdmin();
+          }
+        }
+      }
+
+      function switchAdminTab(tab) {
+        document
+          .querySelectorAll(".admin-tab")
+          .forEach((t) => t.classList.remove("active"));
+        document
+          .querySelectorAll(".admin-content")
+          .forEach((c) => c.classList.remove("active"));
+        event.target.classList.add("active");
+        document.getElementById("tab-" + tab).classList.add("active");
+        if (tab === "pedidos") carregarPedidosAdmin();
+      }
+
+      // ===== CRIAR PRODUTO =====
+      async function criarProduto() {
+        const nome = document.getElementById("c-nome").value.trim();
+        const cat = document.getElementById("c-cat").value.trim();
+        const desc = document.getElementById("c-desc").value.trim();
+        const preco = parseFloat(document.getElementById("c-preco").value);
+        const estoque = parseInt(document.getElementById("c-estoque").value);
+        const msgEl = document.getElementById("msg-criar");
+
+        if (!nome || !cat || isNaN(preco) || isNaN(estoque)) {
+          msgEl.innerHTML =
+            '<div class="msg msg-error">Preencha todos os campos obrigatórios.</div>';
+          return;
+        }
+
+        try {
+          const res = await fetch(`${API}/Produtos`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              nome,
+              categoria: cat,
+              descricao: desc,
+              preco,
+              estoque,
+            }),
+          });
+          if (res.ok) {
+            msgEl.innerHTML =
+              '<div class="msg msg-success">✅ Produto cadastrado com sucesso!</div>';
+            document.getElementById("c-nome").value = "";
+            document.getElementById("c-cat").value = "";
+            document.getElementById("c-desc").value = "";
+            document.getElementById("c-preco").value = "";
+            document.getElementById("c-estoque").value = "";
+            setTimeout(() => {
+              mostrarGlobalMsg("Produto criado!", "success");
+              carregarProdutos();
+            }, 800);
+          } else {
+            const err = await res.json();
+            msgEl.innerHTML = `<div class="msg msg-error">${err.mensagem}</div>`;
+          }
+        } catch (e) {
+          msgEl.innerHTML = '<div class="msg msg-error">Erro de conexão.</div>';
+        }
+      }
+
+      // ===== DELETAR PRODUTO =====
+      async function deletarProduto(id) {
+        if (!confirm("Tem certeza que deseja deletar este produto?")) return;
+        try {
+          const res = await fetch(`${API}/Produtos/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (res.status === 204) {
+            mostrarGlobalMsg("Produto deletado com sucesso.", "success");
+            carregarProdutos();
+          } else {
+            mostrarGlobalMsg("Erro ao deletar produto.", "error");
+          }
+        } catch (e) {
+          mostrarGlobalMsg("Erro de conexão.", "error");
+        }
+      }
+
+      // ===== PATCH PRODUTO =====
+      function abrirModalPatch(id, produtoJson) {
+        const p = JSON.parse(produtoJson);
+        document.getElementById("patch-id").value = id;
+        document.getElementById("patch-nome").placeholder = p.nome;
+        document.getElementById("patch-categoria").placeholder = p.categoria;
+        document.getElementById("patch-descricao").placeholder = p.descricao;
+        document.getElementById("patch-preco").placeholder = p.preco;
+        document.getElementById("patch-estoque").placeholder = p.estoque;
+        document.getElementById("patch-nome").value = "";
+        document.getElementById("patch-categoria").value = "";
+        document.getElementById("patch-descricao").value = "";
+        document.getElementById("patch-preco").value = "";
+        document.getElementById("patch-estoque").value = "";
+        document.getElementById("modal-patch").style.display = "flex";
+      }
+
+      function fecharModal() {
+        document.getElementById("modal-patch").style.display = "none";
+      }
+
+      async function salvarPatch() {
+        const id = document.getElementById("patch-id").value;
+        const body = {};
+        const nome = document.getElementById("patch-nome").value.trim();
+        const cat = document.getElementById("patch-categoria").value.trim();
+        const desc = document.getElementById("patch-descricao").value.trim();
+        const preco = document.getElementById("patch-preco").value;
+        const estoque = document.getElementById("patch-estoque").value;
+
+        if (nome) body.nome = nome;
+        if (cat) body.categoria = cat;
+        if (desc) body.descricao = desc;
+        if (preco) body.preco = parseFloat(preco);
+        if (estoque) body.estoque = parseInt(estoque);
+
+        if (Object.keys(body).length === 0) {
+          alert("Preencha pelo menos um campo para atualizar.");
+          return;
+        }
+
+        try {
+          const res = await fetch(`${API}/Produtos/${id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(body),
+          });
+          if (res.ok) {
+            fecharModal();
+            mostrarGlobalMsg("Produto atualizado com sucesso!", "success");
+            carregarProdutos();
+          } else {
+            const err = await res.json();
+            alert(err.mensagem);
+          }
+        } catch (e) {
+          alert("Erro de conexão.");
+        }
+      }
+
+      // ===== GERENCIAR PEDIDOS (ADMIN) =====
+      async function carregarPedidosAdmin() {
+        const el = document.getElementById("tabela-pedidos-admin");
+        if (!el) return;
+        el.innerHTML = '<div class="loading">Carregando pedidos...</div>';
+        try {
+          const res = await fetch(`${API}/Pedidos`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const pedidos = await res.json();
+          if (pedidos.length === 0) {
+            el.innerHTML =
+              '<p style="color:var(--gray);text-align:center;padding:20px">Nenhum pedido encontrado.</p>';
+            return;
+          }
+          let rows = pedidos
+            .map(
+              (p) => `
+      <tr>
+        <td><code style="font-size:11px">#${p.id.slice(-6)}</code></td>
+        <td>${new Date(p.criadoEm).toLocaleDateString("pt-BR")}</td>
+        <td>${p.itens.length} item(s)</td>
+        <td><strong>R$ ${p.total.toFixed(2)}</strong></td>
+        <td><span class="status-badge status-${p.status}">${p.status}</span></td>
+        <td>
+          <select class="status-select" id="sel-${p.id}">
+            <option value="pendente" ${p.status === "pendente" ? "selected" : ""}>Pendente</option>
+            <option value="confirmado" ${p.status === "confirmado" ? "selected" : ""}>Confirmado</option>
+            <option value="enviado" ${p.status === "enviado" ? "selected" : ""}>Enviado</option>
+            <option value="entregue" ${p.status === "entregue" ? "selected" : ""}>Entregue</option>
+            <option value="cancelado" ${p.status === "cancelado" ? "selected" : ""}>Cancelado</option>
+          </select>
+          <button class="btn-update-status" onclick="atualizarStatusPedido('${p.id}')">✓</button>
+        </td>
+      </tr>`,
+            )
+            .join("");
+          el.innerHTML = `
+      <table class="orders-table">
+        <thead><tr><th>ID</th><th>Data</th><th>Itens</th><th>Total</th><th>Status</th><th>Ação</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+        } catch (e) {
+          el.innerHTML =
+            '<div class="msg msg-error">Erro ao carregar pedidos.</div>';
+        }
+      }
+
+      async function atualizarStatusPedido(id) {
+        const novoStatus = document.getElementById("sel-" + id).value;
+        try {
+          const res = await fetch(`${API}/Pedidos/${id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ status: novoStatus }),
+          });
+          if (res.ok) {
+            mostrarGlobalMsg(
+              "Status atualizado para: " + novoStatus,
+              "success",
+            );
+            carregarPedidosAdmin();
+          } else {
+            mostrarGlobalMsg("Erro ao atualizar status.", "error");
+          }
+        } catch (e) {
+          mostrarGlobalMsg("Erro de conexão.", "error");
+        }
+      }
+
+      // ===== CARRINHO =====
       function adicionarCarrinho(id, nome, preco) {
         if (!token) {
-          alert("Faça login para adicionar ao carrinho!");
           mostrarTela("login");
           return;
         }
-
-        const existente = carrinho.find((i) => i.produtoId === id);
-        if (existente) {
-          existente.quantidade++;
-        } else {
-          carrinho.push({ produtoId: id, nome, preco, quantidade: 1 });
-        }
-
-        atualizarCarrinho();
-        mostrarMensagem("Produto adicionado ao carrinho!", "sucesso");
+        const ex = carrinho.find((i) => i.produtoId === id);
+        if (ex) ex.quantidade++;
+        else carrinho.push({ produtoId: id, nome, preco, quantidade: 1 });
+        atualizarCarrinhoCount();
+        mostrarGlobalMsg("Produto adicionado ao carrinho!", "success");
       }
 
-      function atualizarCarrinho() {
+      function atualizarCarrinhoCount() {
         const qtd = carrinho.reduce((t, i) => t + i.quantidade, 0);
-        document.getElementById("qtd-carrinho").textContent = qtd;
-        document.getElementById("carrinho-flutuante").style.display =
-          qtd > 0 ? "block" : "none";
+        const el = document.getElementById("cart-count");
+        if (el) el.textContent = qtd;
       }
 
       function mostrarCarrinho() {
-        const conteudo = document.getElementById("conteudo");
-
+        const c = document.getElementById("conteudo");
         if (carrinho.length === 0) {
-          conteudo.innerHTML =
-            "<h2>Carrinho</h2><p>Seu carrinho está vazio.</p>";
+          c.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🛒</div>
+        <h3>CARRINHO VAZIO</h3>
+        <p>Adicione produtos para continuar.</p>
+        <button class="btn-submit" style="margin-top:20px" onclick="mostrarTela('produtos')">VER PRODUTOS</button>
+      </div>`;
           return;
         }
-
         let total = 0;
-        let itens = "";
-
-        carrinho.forEach((i, index) => {
-          total += i.preco * i.quantidade;
-          itens += `
-            <div class="card">
-                <h3>${i.nome}</h3>
-                <div style="display:flex; align-items:center; gap:10px; margin:10px 0">
-                    <button onclick="alterarQuantidade(${index}, -1)" 
-                        style="background:#1a1a2e; color:white; border:none; 
-                        width:30px; height:30px; border-radius:50%; 
-                        font-size:18px; cursor:pointer; display:flex; 
-                        align-items:center; justify-content:center">−</button>
-                    <span style="font-size:16px; font-weight:bold">${i.quantidade}</span>
-                    <button onclick="alterarQuantidade(${index}, 1)" 
-                        style="background:#1a1a2e; color:white; border:none; 
-                        width:30px; height:30px; border-radius:50%; 
-                        font-size:18px; cursor:pointer; display:flex; 
-                        align-items:center; justify-content:center">+</button>
-                    <span style="color:#888; margin-left:10px">
-                        R$ ${(i.preco * i.quantidade).toFixed(2)}
-                    </span>
-                    <button onclick="removerDoCarrinho(${index})" 
-                        style="background:#e94560; color:white; border:none; 
-                        padding:5px 12px; border-radius:4px; cursor:pointer; 
-                        margin-left:auto">🗑 Remover</button>
-                </div>
-                <p class="preco">R$ ${i.preco.toFixed(2)} cada</p>
-            </div>
-        `;
-        });
-
-        conteudo.innerHTML = `
-        <h2>Carrinho</h2><br>
-        ${itens}
-        <div class="card">
-            <h3>Total: R$ ${total.toFixed(2)}</h3>
-            <button onclick="finalizarPedido()">✅ Finalizar Pedido</button>
+        c.innerHTML = `<div class="section-header"><div class="section-title">MEU <span>CARRINHO</span></div></div>`;
+        carrinho.forEach((item, i) => {
+          total += item.preco * item.quantidade;
+          c.innerHTML += `
+      <div class="cart-item">
+        <div class="cart-item-icon">${getCategoryEmoji("")}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.nome}</div>
+          <div class="cart-item-price">R$ ${item.preco.toFixed(2)} cada</div>
         </div>
-    `;
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="qtdCarrinho(${i},-1)">−</button>
+          <span class="qty-num">${item.quantidade}</span>
+          <button class="qty-btn" onclick="qtdCarrinho(${i},1)">+</button>
+        </div>
+        <button class="btn-remove" onclick="removerCarrinho(${i})">🗑 Remover</button>
+      </div>`;
+        });
+        c.innerHTML += `
+    <div class="cart-summary">
+      <div class="cart-total-row">
+        <span class="cart-total-label">TOTAL DO PEDIDO</span>
+        <span class="cart-total-value">R$ ${total.toFixed(2)}</span>
+      </div>
+      <button class="btn-checkout" onclick="finalizarPedido()">✅ FINALIZAR PEDIDO</button>
+    </div>`;
       }
 
-      function alterarQuantidade(index, delta) {
-        carrinho[index].quantidade += delta;
-        if (carrinho[index].quantidade <= 0) {
-          carrinho.splice(index, 1);
-        }
-        atualizarCarrinho();
+      function qtdCarrinho(i, d) {
+        carrinho[i].quantidade += d;
+        if (carrinho[i].quantidade <= 0) carrinho.splice(i, 1);
+        atualizarCarrinhoCount();
         mostrarCarrinho();
       }
 
-      function removerDoCarrinho(index) {
-        carrinho.splice(index, 1);
-        atualizarCarrinho();
+      function removerCarrinho(i) {
+        carrinho.splice(i, 1);
+        atualizarCarrinhoCount();
         mostrarCarrinho();
       }
 
-      // Pedidos: Consome POST /api/Pedidos — endpoint protegido
       async function finalizarPedido() {
-        const itens = carrinho.map((i) => ({
-          produtoId: i.produtoId,
-          quantidade: i.quantidade,
-        }));
-
         try {
           const res = await fetch(`${API}/Pedidos`, {
             method: "POST",
@@ -327,192 +1599,199 @@
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ itens }),
+            body: JSON.stringify({
+              itens: carrinho.map((i) => ({
+                produtoId: i.produtoId,
+                quantidade: i.quantidade,
+              })),
+            }),
           });
-
           if (res.ok) {
             carrinho = [];
-            atualizarCarrinho();
-            mostrarMensagem("Pedido realizado com sucesso!", "sucesso");
+            atualizarCarrinhoCount();
+            mostrarGlobalMsg("Pedido realizado com sucesso!", "success");
             mostrarTela("meus-pedidos");
           } else {
-            mostrarMensagem("Erro ao finalizar pedido.", "erro");
+            const err = await res.json();
+            mostrarGlobalMsg(
+              err.mensagem || "Erro ao finalizar pedido.",
+              "error",
+            );
           }
         } catch (e) {
-          mostrarMensagem("Erro de conexão com a API.", "erro");
+          mostrarGlobalMsg("Erro de conexão.", "error");
         }
       }
 
-      // Consome GET /api/Pedidos — endpoint protegido
+      // ===== MEUS PEDIDOS =====
       async function carregarMeusPedidos() {
-        const conteudo = document.getElementById("conteudo");
-        conteudo.innerHTML = "<h2>Meus Pedidos</h2><br>";
-
+        const c = document.getElementById("conteudo");
+        c.innerHTML = `<div class="section-header"><div class="section-title">MEUS <span>PEDIDOS</span></div></div><div class="loading">Carregando...</div>`;
         try {
           const res = await fetch(`${API}/Pedidos`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-
           const pedidos = await res.json();
-
+          c.querySelector(".loading").remove();
           if (pedidos.length === 0) {
-            conteudo.innerHTML += "<p>Você ainda não tem pedidos.</p>";
+            c.innerHTML += `<div class="empty-state"><div class="empty-state-icon">📦</div><h3>NENHUM PEDIDO</h3><p>Faça seu primeiro pedido!</p></div>`;
             return;
           }
-
-          pedidos.forEach((p) => {
-            let itens = p.itens
+          pedidos.reverse().forEach((p) => {
+            const itens = p.itens
               .map(
                 (i) =>
-                  `<li>${i.nomeProduto} x${i.quantidade} — R$ ${i.precoUnitario.toFixed(2)}</li>`,
+                  `<div class="order-item"><span>${i.nomeProduto} ×${i.quantidade}</span><span>R$ ${(i.precoUnitario * i.quantidade).toFixed(2)}</span></div>`,
               )
               .join("");
-
-            conteudo.innerHTML += `
-                    <div class="card">
-                        <h3>Pedido #${p.id.slice(-6)}</h3>
-                        <p>Status: <strong>${p.status}</strong></p>
-                        <ul>${itens}</ul>
-                        <p class="preco">Total: R$ ${p.total.toFixed(2)}</p>
-                        <small>${new Date(p.criadoEm).toLocaleString("pt-BR")}</small>
-                    </div>
-                `;
+            c.innerHTML += `
+        <div class="order-card">
+          <div class="order-card-header">
+            <span class="order-id">PEDIDO #${p.id.slice(-6)}</span>
+            <span class="status-badge status-${p.status}">${p.status}</span>
+          </div>
+          <div class="order-card-body">
+            ${itens}
+            <div class="order-total">R$ ${p.total.toFixed(2)}</div>
+            <small style="color:var(--gray)">${new Date(p.criadoEm).toLocaleString("pt-BR")}</small>
+          </div>
+        </div>`;
           });
         } catch (e) {
-          conteudo.innerHTML +=
-            '<p class="mensagem erro">Erro ao carregar pedidos.</p>';
+          c.innerHTML +=
+            '<div class="msg msg-error">Erro ao carregar pedidos.</div>';
         }
       }
 
       // ===== AUTH =====
       function mostrarLogin() {
         document.getElementById("conteudo").innerHTML = `
-            <div class="card" style="max-width:400px; margin:50px auto">
-                <h2>Login</h2>
-                <div id="msg-login"></div>
-                <form onsubmit="fazerLogin(event)">
-                    <input type="email" id="login-email" placeholder="Email" required>
-                    <input type="password" id="login-senha" placeholder="Senha" required>
-                    <button type="submit">Entrar</button>
-                </form>
-                <p style="margin-top:15px">
-                    Não tem conta? 
-                    <a href="#" onclick="mostrarTela('registro')">Registre-se</a>
-                </p>
-            </div>
-        `;
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="auth-title">🚴 LOGIN</div>
+          <div class="auth-subtitle">Entre na sua conta CiclismoShop</div>
+        </div>
+        <div class="auth-body">
+          <div id="msg-login"></div>
+          <input class="auth-input" type="email" id="l-email" placeholder="Seu email">
+          <input class="auth-input" type="password" id="l-senha" placeholder="Sua senha">
+          <button class="auth-btn" onclick="fazerLogin()">ENTRAR</button>
+          <div class="auth-footer">Não tem conta? <a onclick="mostrarTela('registro')">Criar conta</a></div>
+        </div>
+      </div>
+    </div>`;
+        document.getElementById("l-senha").addEventListener("keypress", (e) => {
+          if (e.key === "Enter") fazerLogin();
+        });
       }
 
       function mostrarRegistro() {
         document.getElementById("conteudo").innerHTML = `
-            <div class="card" style="max-width:400px; margin:50px auto">
-                <h2>Criar Conta</h2>
-                <div id="msg-registro"></div>
-                <form onsubmit="fazerRegistro(event)">
-                    <input type="text" id="reg-nome" placeholder="Nome" required>
-                    <input type="email" id="reg-email" placeholder="Email" required>
-                    <input type="password" id="reg-senha" placeholder="Senha" required>
-                    <button type="submit">Criar Conta</button>
-                </form>
-                <p style="margin-top:15px">
-                    Já tem conta? 
-                    <a href="#" onclick="mostrarTela('login')">Faça login</a>
-                </p>
-            </div>
-        `;
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="auth-title">📝 CADASTRO</div>
+          <div class="auth-subtitle">Crie sua conta CiclismoShop</div>
+        </div>
+        <div class="auth-body">
+          <div id="msg-reg"></div>
+          <input class="auth-input" type="text" id="r-nome" placeholder="Seu nome">
+          <input class="auth-input" type="email" id="r-email" placeholder="Seu email">
+          <input class="auth-input" type="password" id="r-senha" placeholder="Sua senha">
+          <button class="auth-btn" onclick="fazerRegistro()">CRIAR CONTA</button>
+          <div class="auth-footer">Já tem conta? <a onclick="mostrarTela('login')">Fazer login</a></div>
+        </div>
+      </div>
+    </div>`;
       }
 
-      // Consome POST /api/Auth/login
-      async function fazerLogin(e) {
-        e.preventDefault();
-        const email = document.getElementById("login-email").value;
-        const senha = document.getElementById("login-senha").value;
-
+      async function fazerLogin() {
+        const email = document.getElementById("l-email").value;
+        const senha = document.getElementById("l-senha").value;
+        const msgEl = document.getElementById("msg-login");
         try {
           const res = await fetch(`${API}/Auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, senha }),
           });
-
           const data = await res.json();
-
           if (res.ok) {
             token = data.token;
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            userRole =
+              payload[
+                "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+              ] || "cliente";
+            userName =
+              payload[
+                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+              ] || "Usuário";
             localStorage.setItem("token", token);
+            localStorage.setItem("userRole", userRole);
+            localStorage.setItem("userName", userName);
             atualizarNavbar();
             mostrarTela("produtos");
           } else {
-            document.getElementById("msg-login").innerHTML =
-              '<p class="mensagem erro">Email ou senha inválidos.</p>';
+            msgEl.innerHTML =
+              '<div class="msg msg-error">Email ou senha inválidos.</div>';
           }
         } catch (e) {
-          document.getElementById("msg-login").innerHTML =
-            '<p class="mensagem erro">Erro de conexão.</p>';
+          msgEl.innerHTML = '<div class="msg msg-error">Erro de conexão.</div>';
         }
       }
 
-      // Consome POST /api/Auth/registrar
-      async function fazerRegistro(e) {
-        e.preventDefault();
-        const nome = document.getElementById("reg-nome").value;
-        const email = document.getElementById("reg-email").value;
-        const senha = document.getElementById("reg-senha").value;
-
+      async function fazerRegistro() {
+        const nome = document.getElementById("r-nome").value;
+        const email = document.getElementById("r-email").value;
+        const senha = document.getElementById("r-senha").value;
+        const msgEl = document.getElementById("msg-reg");
         try {
           const res = await fetch(`${API}/Auth/registrar`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nome, email, senha }),
           });
-
           if (res.ok) {
-            document.getElementById("msg-registro").innerHTML =
-              '<p class="mensagem sucesso">Conta criada! Faça login.</p>';
-            setTimeout(() => mostrarTela("login"), 1500);
+            msgEl.innerHTML =
+              '<div class="msg msg-success">Conta criada! Redirecionando...</div>';
+            setTimeout(() => mostrarTela("login"), 1200);
           } else {
-            document.getElementById("msg-registro").innerHTML =
-              '<p class="mensagem erro">Email já cadastrado.</p>';
+            const err = await res.json();
+            msgEl.innerHTML = `<div class="msg msg-error">${err.mensagem}</div>`;
           }
         } catch (e) {
-          document.getElementById("msg-registro").innerHTML =
-            '<p class="mensagem erro">Erro de conexão.</p>';
+          msgEl.innerHTML = '<div class="msg msg-error">Erro de conexão.</div>';
         }
       }
 
       function logout() {
         token = null;
-        localStorage.removeItem("token");
+        userRole = null;
+        userName = null;
         carrinho = [];
-        atualizarCarrinho();
+        localStorage.clear();
         atualizarNavbar();
         mostrarTela("produtos");
       }
 
-      function atualizarNavbar() {
-        if (token) {
-          document.getElementById("btn-login").style.display = "none";
-          document.getElementById("btn-logout").style.display = "inline";
-          document.getElementById("btn-pedidos").style.display = "inline";
-        } else {
-          document.getElementById("btn-login").style.display = "inline";
-          document.getElementById("btn-logout").style.display = "none";
-          document.getElementById("btn-pedidos").style.display = "none";
-          document.getElementById("usuario-logado").textContent = "";
-        }
-      }
-
-      function mostrarMensagem(texto, tipo) {
+      // ===== UTILS =====
+      function mostrarGlobalMsg(texto, tipo) {
+        const el = document.getElementById("msgs-global");
         const div = document.createElement("div");
-        div.className = `mensagem ${tipo}`;
-        div.textContent = texto;
-        document.getElementById("conteudo").prepend(div);
+        div.className = `msg msg-${tipo}`;
+        div.textContent = tipo === "success" ? "✅ " + texto : "❌ " + texto;
+        el.appendChild(div);
         setTimeout(() => div.remove(), 3000);
       }
 
-      // Inicia na tela de produtos
-      atualizarNavbar();
-      mostrarTela("produtos");
+      // Fechar modal clicando fora
+      document.getElementById("modal-patch").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("modal-patch")) fecharModal();
+      });
+
+      init();
     </script>
   </body>
 </html>

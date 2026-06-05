@@ -1,6 +1,7 @@
 using CiclismoAPI.Models;
 using MongoDB.Driver;
 using System.Net.Security;
+using CiclismoAPI.DTOs;
 
 namespace CiclismoAPI.Services
 {
@@ -13,7 +14,7 @@ namespace CiclismoAPI.Services
         {
             var connectionString = configuration["MongoDB:ConnectionString"];
             var databaseName = configuration["MongoDB:DatabaseName"];
-// Consertando o erro de sll: nao conecta com o MongoDB Atlas por causa do SSL, entao desabilitamos a validação do certificado
+        // Consertando o erro de sll: nao conecta com o MongoDB Atlas por causa do SSL, entao desabilitamos a validação do certificado
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             settings.SslSettings = new SslSettings
             {
@@ -53,6 +54,34 @@ namespace CiclismoAPI.Services
             var resultado = await _produtos.ReplaceOneAsync(p => p.Id == id, produtoAtualizado);
             return resultado.ModifiedCount > 0;
         }
+
+    // PATCH /api/produtos/{id}
+    // Atualiza apenas os campos enviados — campos null são ignorados
+public async Task<bool> Patch(string id, ProdutoPatchDTO dto)
+{
+    var produto = await BuscarPorId(id);
+    if (produto == null) return false;
+
+    // Só atualiza os campos que foram enviados (não nulos)
+    var updateDefinitions = new List<UpdateDefinition<Produto>>();
+
+    if (dto.Nome != null)
+        updateDefinitions.Add(Builders<Produto>.Update.Set(p => p.Nome, dto.Nome));
+    if (dto.Descricao != null)
+        updateDefinitions.Add(Builders<Produto>.Update.Set(p => p.Descricao, dto.Descricao));
+    if (dto.Categoria != null)
+        updateDefinitions.Add(Builders<Produto>.Update.Set(p => p.Categoria, dto.Categoria));
+    if (dto.Preco != null)
+        updateDefinitions.Add(Builders<Produto>.Update.Set(p => p.Preco, dto.Preco.Value));
+    if (dto.Estoque != null)
+        updateDefinitions.Add(Builders<Produto>.Update.Set(p => p.Estoque, dto.Estoque.Value));
+
+    if (!updateDefinitions.Any()) return false;
+
+    var update = Builders<Produto>.Update.Combine(updateDefinitions);
+    var resultado = await _produtos.UpdateOneAsync(p => p.Id == id, update);
+    return resultado.ModifiedCount > 0;
+}
 
         public async Task<bool> Deletar(string id)
         {

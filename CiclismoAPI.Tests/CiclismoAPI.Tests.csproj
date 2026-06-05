@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CiclismoAPI\CiclismoAPI.csproj" />
-  </ItemGroup>
+  <ProjectReference Include="..\CiclismoAPI.csproj" />
+</ItemGroup>
 
 </Project>

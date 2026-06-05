@@ -124,5 +124,89 @@ namespace CiclismoAPI.Tests
 
             Assert.False(resultado);
         }
+
+        // TESTE 5: PATCH com campos válidos — atualiza apenas os campos enviados
+    [Fact]
+    public async Task Patch_CamposValidos_RetornaTrue()
+    {
+    // Arrange
+    var produtoExistente = new Produto
+    {
+        Id = "6a11f120ef624fa245292edd",
+        Nome = "Capacete Antigo",
+        Preco = 299.90m,
+        Estoque = 10
+    };
+
+    // Mock FindAsync — simula produto encontrado
+    var mockCursor = new Mock<IAsyncCursor<Produto>>();
+    mockCursor
+        .SetupSequence(c => c.MoveNextAsync(It.IsAny<CancellationToken>()))
+        .ReturnsAsync(true)
+        .ReturnsAsync(false);
+    mockCursor
+        .Setup(c => c.Current)
+        .Returns(new List<Produto> { produtoExistente });
+
+    _mockColecao
+        .Setup(c => c.FindAsync(
+            It.IsAny<FilterDefinition<Produto>>(),
+            It.IsAny<FindOptions<Produto, Produto>>(),
+            It.IsAny<CancellationToken>()))
+        .ReturnsAsync(mockCursor.Object);
+
+    // Mock UpdateOneAsync — simula 1 documento modificado
+    var mockUpdateResult = new Mock<UpdateResult>();
+    mockUpdateResult.Setup(r => r.ModifiedCount).Returns(1);
+
+    _mockColecao
+        .Setup(c => c.UpdateOneAsync(
+            It.IsAny<FilterDefinition<Produto>>(),
+            It.IsAny<UpdateDefinition<Produto>>(),
+            It.IsAny<UpdateOptions>(),
+            It.IsAny<CancellationToken>()))
+        .ReturnsAsync(mockUpdateResult.Object);
+
+    var dto = new CiclismoAPI.DTOs.ProdutoPatchDTO
+    {
+        Preco = 259.90m,
+        Estoque = 8
+    };
+
+    // Act
+    var resultado = await _service.Patch("6a11f120ef624fa245292edd", dto);
+
+    // Assert — PATCH com campos válidos deve retornar true
+    Assert.True(resultado);
+}
+
+// TESTE 6: PATCH em produto inexistente — retorna false
+    [Fact]
+    public async Task Patch_ProdutoInexistente_RetornaFalse()
+    {
+    // Arrange — Mock retorna cursor vazio (produto não existe)
+    var mockCursor = new Mock<IAsyncCursor<Produto>>();
+    mockCursor
+        .SetupSequence(c => c.MoveNextAsync(It.IsAny<CancellationToken>()))
+        .ReturnsAsync(false);
+    mockCursor
+        .Setup(c => c.Current)
+        .Returns(new List<Produto>());
+
+    _mockColecao
+        .Setup(c => c.FindAsync(
+            It.IsAny<FilterDefinition<Produto>>(),
+            It.IsAny<FindOptions<Produto, Produto>>(),
+            It.IsAny<CancellationToken>()))
+        .ReturnsAsync(mockCursor.Object);
+
+    var dto = new CiclismoAPI.DTOs.ProdutoPatchDTO { Preco = 199.90m };
+
+    // Act
+    var resultado = await _service.Patch("id_inexistente", dto);
+
+    // Assert — produto não existe, deve retornar false
+    Assert.False(resultado);
+    }
     }
 }
