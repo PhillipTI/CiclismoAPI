@@ -1084,9 +1084,9 @@
 
     <script>
       const API = "http://localhost:5067/api";
-      let token = localStorage.getItem("token");
-      let userRole = localStorage.getItem("userRole");
-      let userName = localStorage.getItem("userName");
+      let token = null;
+      let userRole = null;
+      let userName = null;
       let carrinho = [];
 
       // ===== INICIALIZAÇÃO =====
@@ -1728,9 +1728,7 @@
               payload[
                 "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
               ] || "Usuário";
-            localStorage.setItem("token", token);
-            localStorage.setItem("userRole", userRole);
-            localStorage.setItem("userName", userName);
+
             atualizarNavbar();
             mostrarTela("produtos");
           } else {
@@ -1771,7 +1769,6 @@
         userRole = null;
         userName = null;
         carrinho = [];
-        localStorage.clear();
         atualizarNavbar();
         mostrarTela("produtos");
       }
