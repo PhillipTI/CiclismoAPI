@@ -36,6 +36,13 @@ namespace CiclismoAPI.Services
             return await _pedidos.Find(p => p.UsuarioId == usuarioId).ToListAsync();
         }
 
+// GET /api/Pedidos/todos — apenas admin: retorna todos os pedidos de todos os usuários
+        public async Task<List<Pedido>> BuscarTodos()
+        {
+            return await _pedidos.Find(_ => true).ToListAsync();
+        }
+
+
 // GET /api/pedidos/{id}
 
         public async Task<Pedido?> BuscarPorId(string id, string usuarioId)
@@ -73,7 +80,7 @@ namespace CiclismoAPI.Services
     pedido.Total = total;
     await _pedidos.InsertOneAsync(pedido);
 
-    // Atualiza o estoque de cada produto após criar o pedido
+// Atualiza o estoque de cada produto após criar o pedido
     foreach (var item in pedido.Itens)
     {
         var update = Builders<Produto>.Update
@@ -96,7 +103,7 @@ namespace CiclismoAPI.Services
     var update = Builders<Pedido>.Update.Set(p => p.Status, novoStatus);
     var resultado = await _pedidos.UpdateOneAsync(p => p.Id == id, update);
 
-    // Se o pedido foi cancelado, devolve os itens ao estoque
+// Se o pedido foi cancelado, devolve os itens ao estoque
     if (novoStatus.ToLower() == "cancelado" && 
         statusAnterior.ToLower() != "cancelado")
     {

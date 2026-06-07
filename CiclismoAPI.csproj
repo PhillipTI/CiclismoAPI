@@ -16,7 +16,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
   </ItemGroup>
 
-  <!-- Exclusão o projeto de testes da compilação do projeto principal -->
   <ItemGroup>
     <Compile Remove="CiclismoAPI.Tests/**" />
     <Content Remove="CiclismoAPI.Tests/**" />

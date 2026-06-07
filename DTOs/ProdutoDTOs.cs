@@ -1,6 +1,6 @@
 namespace CiclismoAPI.DTOs
 {
-    // Cliente, criação de um produto
+    // Criação de um produto
     public class ProdutoCriarDTO
     {
         public string Nome { get; set; } = string.Empty;
@@ -10,7 +10,7 @@ namespace CiclismoAPI.DTOs
         public int Estoque { get; set; }
     }
 
-    // Cliente, atualização de um produto
+    // Atualização de um produto
     public class ProdutoAtualizarDTO
     {
         public string Nome { get; set; } = string.Empty;

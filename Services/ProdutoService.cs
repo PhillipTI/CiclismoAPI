@@ -9,12 +9,11 @@ namespace CiclismoAPI.Services
     {
         private readonly IMongoCollection<Produto> _produtos;
 
-        // Construtor para uso real — recebe IConfiguration e cria a conexão...
+// Construtor para uso real — recebe IConfiguration e cria a conexão...
         public ProdutoService(IConfiguration configuration)
         {
             var connectionString = configuration["MongoDB:ConnectionString"];
             var databaseName = configuration["MongoDB:DatabaseName"];
-        // Consertando o erro de sll: nao conecta com o MongoDB Atlas por causa do SSL, entao desabilitamos a validação do certificado
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             settings.SslSettings = new SslSettings
             {
@@ -25,7 +24,7 @@ namespace CiclismoAPI.Services
             _produtos = database.GetCollection<Produto>("produtos");
         }
 
-        // Construtor para testes — recebe a coleção diretamente e permite injetar um Mock no lugar do MongoDB real
+// Construtor para testes — recebe a coleção diretamente e permite injetar um Mock no lugar do MongoDB real
         public ProdutoService(IMongoCollection<Produto> produtos)
         {
             _produtos = produtos;
@@ -55,14 +54,13 @@ namespace CiclismoAPI.Services
             return resultado.ModifiedCount > 0;
         }
 
-    // PATCH /api/produtos/{id}
-    // Atualiza apenas os campos enviados — campos null são ignorados
+// PATCH /api/produtos/{id}: atualiza apenas os campos enviados — campos null são ignorados
 public async Task<bool> Patch(string id, ProdutoPatchDTO dto)
 {
     var produto = await BuscarPorId(id);
     if (produto == null) return false;
 
-    // Só atualiza os campos que foram enviados (não nulos)
+// Só atualiza os campos que foram enviados (não nulos)
     var updateDefinitions = new List<UpdateDefinition<Produto>>();
 
     if (dto.Nome != null)

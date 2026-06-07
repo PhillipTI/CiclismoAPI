@@ -119,13 +119,13 @@ namespace CiclismoAPI.Controllers
 /// <response code="403">Usuário não tem perfil admin.</response>
 
 // PATH /api/produtos/{id}
-[HttpPatch("{id}")]
-[Authorize(Roles = "admin")]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status400BadRequest)]
-[ProducesResponseType(StatusCodes.Status404NotFound)]
-[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-[ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [HttpPatch("{id}")]
+    [Authorize(Roles = "admin")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
 public async Task<IActionResult> Patch(string id, [FromBody] ProdutoPatchDTO dto)
 {
     var existente = await _produtoService.BuscarPorId(id);

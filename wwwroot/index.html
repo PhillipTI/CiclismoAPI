@@ -1449,9 +1449,11 @@
       async function carregarPedidosAdmin() {
         const el = document.getElementById("tabela-pedidos-admin");
         if (!el) return;
-        el.innerHTML = '<div class="loading">Carregando pedidos...</div>';
+        el.innerHTML =
+          '<div class="loading">Carregando todos os pedidos...</div>';
         try {
-          const res = await fetch(`${API}/Pedidos`, {
+          // ADMIN usa /todos para ver pedidos de TODOS os usuários
+          const res = await fetch(`${API}/Pedidos/todos`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           const pedidos = await res.json();
@@ -1463,30 +1465,39 @@
           let rows = pedidos
             .map(
               (p) => `
-      <tr>
-        <td><code style="font-size:11px">#${p.id.slice(-6)}</code></td>
-        <td>${new Date(p.criadoEm).toLocaleDateString("pt-BR")}</td>
-        <td>${p.itens.length} item(s)</td>
-        <td><strong>R$ ${p.total.toFixed(2)}</strong></td>
-        <td><span class="status-badge status-${p.status}">${p.status}</span></td>
-        <td>
-          <select class="status-select" id="sel-${p.id}">
-            <option value="pendente" ${p.status === "pendente" ? "selected" : ""}>Pendente</option>
-            <option value="confirmado" ${p.status === "confirmado" ? "selected" : ""}>Confirmado</option>
-            <option value="enviado" ${p.status === "enviado" ? "selected" : ""}>Enviado</option>
-            <option value="entregue" ${p.status === "entregue" ? "selected" : ""}>Entregue</option>
-            <option value="cancelado" ${p.status === "cancelado" ? "selected" : ""}>Cancelado</option>
-          </select>
-          <button class="btn-update-status" onclick="atualizarStatusPedido('${p.id}')">✓</button>
-        </td>
-      </tr>`,
+            <tr>
+                <td><code style="font-size:11px">#${p.id.slice(-6)}</code></td>
+                <td>${new Date(p.criadoEm).toLocaleDateString("pt-BR")}</td>
+                <td>${p.itens.length} item(s)</td>
+                <td><strong>R$ ${p.total.toFixed(2)}</strong></td>
+                <td><span class="status-badge status-${p.status}">${p.status}</span></td>
+                <td>
+                    <select class="status-select" id="sel-${p.id}">
+                        <option value="pendente"   ${p.status === "pendente" ? "selected" : ""}>Pendente</option>
+                        <option value="confirmado" ${p.status === "confirmado" ? "selected" : ""}>Confirmado</option>
+                        <option value="enviado"    ${p.status === "enviado" ? "selected" : ""}>Enviado</option>
+                        <option value="entregue"   ${p.status === "entregue" ? "selected" : ""}>Entregue</option>
+                        <option value="cancelado"  ${p.status === "cancelado" ? "selected" : ""}>Cancelado</option>
+                    </select>
+                    <button class="btn-update-status" onclick="atualizarStatusPedido('${p.id}')">✓</button>
+                </td>
+            </tr>`,
             )
             .join("");
           el.innerHTML = `
-      <table class="orders-table">
-        <thead><tr><th>ID</th><th>Data</th><th>Itens</th><th>Total</th><th>Status</th><th>Ação</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>Itens</th>
+                        <th>Total</th>
+                        <th>Status Atual</th>
+                        <th>Alterar Status</th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>`;
         } catch (e) {
           el.innerHTML =
             '<div class="msg msg-error">Erro ao carregar pedidos.</div>';
@@ -1633,33 +1644,83 @@
           });
           const pedidos = await res.json();
           c.querySelector(".loading").remove();
+
           if (pedidos.length === 0) {
-            c.innerHTML += `<div class="empty-state"><div class="empty-state-icon">📦</div><h3>NENHUM PEDIDO</h3><p>Faça seu primeiro pedido!</p></div>`;
+            c.innerHTML += `
+                <div class="empty-state">
+                    <div class="empty-state-icon">📦</div>
+                    <h3>NENHUM PEDIDO</h3>
+                    <p>Faça seu primeiro pedido!</p>
+                </div>`;
             return;
           }
+
           pedidos.reverse().forEach((p) => {
             const itens = p.itens
               .map(
                 (i) =>
-                  `<div class="order-item"><span>${i.nomeProduto} ×${i.quantidade}</span><span>R$ ${(i.precoUnitario * i.quantidade).toFixed(2)}</span></div>`,
+                  `<div class="order-item">
+                    <span>${i.nomeProduto} ×${i.quantidade}</span>
+                    <span>R$ ${(i.precoUnitario * i.quantidade).toFixed(2)}</span>
+                </div>`,
               )
               .join("");
+
+            // Cliente só pode cancelar pedidos pendentes ou confirmados
+            const podeCancelar =
+              p.status === "pendente" || p.status === "confirmado";
+            const btnCancelar = podeCancelar
+              ? `<button onclick="cancelarPedido('${p.id}')"
+                    style="margin-top:10px; background:#e94560; color:white; border:none;
+                    padding:8px 16px; border-radius:4px; cursor:pointer; font-size:13px;
+                    font-weight:700;">
+                    ✕ Cancelar Pedido
+                   </button>`
+              : p.status === "cancelado"
+                ? ""
+                : `<p style="margin-top:10px; font-size:12px; color:#888;">
+                    ⚠ Não é possível cancelar — pedido já foi ${p.status}.
+                   </p>`;
+
             c.innerHTML += `
-        <div class="order-card">
-          <div class="order-card-header">
-            <span class="order-id">PEDIDO #${p.id.slice(-6)}</span>
-            <span class="status-badge status-${p.status}">${p.status}</span>
-          </div>
-          <div class="order-card-body">
-            ${itens}
-            <div class="order-total">R$ ${p.total.toFixed(2)}</div>
-            <small style="color:var(--gray)">${new Date(p.criadoEm).toLocaleString("pt-BR")}</small>
-          </div>
-        </div>`;
+                <div class="order-card">
+                    <div class="order-card-header">
+                        <span class="order-id">PEDIDO #${p.id.slice(-6)}</span>
+                        <span class="status-badge status-${p.status}">${p.status}</span>
+                    </div>
+                    <div class="order-card-body">
+                        ${itens}
+                        <div class="order-total">R$ ${p.total.toFixed(2)}</div>
+                        <small style="color:var(--gray)">
+                            ${new Date(p.criadoEm).toLocaleString("pt-BR")}
+                        </small>
+                        ${btnCancelar}
+                    </div>
+                </div>`;
           });
         } catch (e) {
           c.innerHTML +=
             '<div class="msg msg-error">Erro ao carregar pedidos.</div>';
+        }
+      }
+      // ===== CANCELAR PEDIDO =====
+
+      async function cancelarPedido(id) {
+        if (!confirm("Tem certeza que deseja cancelar este pedido?")) return;
+        try {
+          const res = await fetch(`${API}/Pedidos/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (res.status === 204) {
+            mostrarGlobalMsg("Pedido cancelado com sucesso.", "success");
+            carregarMeusPedidos();
+          } else {
+            const err = await res.json();
+            mostrarGlobalMsg(err.mensagem, "error");
+          }
+        } catch (e) {
+          mostrarGlobalMsg("Erro de conexão.", "error");
         }
       }
 

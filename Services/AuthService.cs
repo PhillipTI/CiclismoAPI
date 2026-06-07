@@ -19,7 +19,6 @@ namespace CiclismoAPI.Services
             var connectionString = configuration["MongoDB:ConnectionString"];
             var databaseName = configuration["MongoDB:DatabaseName"];
             
-    // Consertando o erro de sll: nao conecta com o MongoDB Atlas por causa do SSL, entao desabilitamos a validação do certificado
         var settings = MongoClientSettings.FromConnectionString(connectionString);
         settings.SslSettings = new SslSettings
         {
@@ -33,12 +32,11 @@ namespace CiclismoAPI.Services
             _configuration = configuration;
         }
 
-        // Segurança / OWASP A02 Cryptographic Failures:
-        // Nunca salvamos a senha em texto puro.
+        // Segurança / OWASP A02 Cryptographic Failures: nunca salvar a senha em texto puro.
      
         public async Task<Usuario?> Registrar(string nome, string email, string senha)
         {
-            // Verifica se o email já existe
+        // Verifica se o email já existe
             var usuarioExistente = await _usuarios
                 .Find(u => u.Email == email)
                 .FirstOrDefaultAsync();
@@ -49,7 +47,7 @@ namespace CiclismoAPI.Services
             {
                 Nome = nome,
                 Email = email,
-                //Segurança: BCrypt faz o hash da senha antes de salvar
+        //Segurança: BCrypt faz o hash da senha antes de salvar
                 SenhaHash = BCrypt.Net.BCrypt.HashPassword(senha),
                 Role = "cliente",
                 CriadoEm = DateTime.UtcNow
@@ -67,7 +65,7 @@ namespace CiclismoAPI.Services
                 .Find(u => u.Email == email)
                 .FirstOrDefaultAsync();
 
-            // Segurança: BCrypt verifica a senha contra o hash salvo
+        // Segurança: BCrypt verifica a senha contra o hash salvo
             if (usuario == null || !BCrypt.Net.BCrypt.Verify(senha, usuario.SenhaHash))
                 return null;
 
@@ -91,7 +89,7 @@ namespace CiclismoAPI.Services
                 new Claim(ClaimTypes.Name, usuario.Nome),
                 new Claim(ClaimTypes.Email, usuario.Email),
                 
-                // JWT/RBAC: A Role no token define o que o usuário pode fazer
+        // JWT/RBAC: A Role no token define o que o usuário pode fazer
                 new Claim(ClaimTypes.Role, usuario.Role)
             };
 
@@ -103,7 +101,7 @@ namespace CiclismoAPI.Services
                 signingCredentials: credentials
             );
 
-            // Retorna o token no formato: header.payload.signature
+        // Retorna o token no formato: header.payload.signature
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
